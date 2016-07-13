@@ -12,6 +12,7 @@
 \usepackage{fancyhdr}
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
+\usepackage{listings}
 
 \textheight 680pt
 \textwidth 460pt
@@ -101,11 +102,159 @@ Additionally we will do some fine-tuning of evolutionary-parameters like populat
 
 \newpage
 
-\input{gp.tex}
+%\input{gp.tex}
 
 \newpage
 
 \input{frameworks.tex}
+
+\newpage
+\section{Genetic Programming}
+As mentioned, a GP Player is represented by a so-called chromosome tree. Or more exactly, the poker player's strategy is represented by this tree.\\
+This means, that each player's tree has a root node and more or less child nodes, where nodes with children are called functions and leave nodes are called terminals.\\
+From the very beginning there is a fixed set of functions and terminals available.
+At first, a population of GP Players with random nodes are created which play a predetermined number of games.
+In each generation there is a chance for every player that it's tree is changed by mutation or crossover.
+
+\subsection{Chromosome Tree}
+\subsubsection{Functions}
+Functions play the most important role in a GP Player's strategy, since functions are the decision-makers.\\
+They can have one or more child nodes and always are of a specific return type. Further they need to have a parent node (except the root function).
+Child nodes can either be terminals or functions, where it is also very important that the child nodes return the very type, that the function expects.\\
+As an example we could define a lower-than function that expects floating point values from both children and returns a boolean value to it's parent node.
+
+\subsubsection{Terminals}
+Terminals are the leave nodes in a player's tree. They cannot have child nodes but return a certain type themselves.\\
+This does not necessarily mean that a terminal's value has to be static. They can have dynamic values like "pot size" or "higher hand card". 
+
+\subsubsection{Root}
+The root node it a special function, since it does not have any parent nodes.\\
+For a proper evaluation of the player's tree it needs to be rooted, so we can start making further decisions at one point.
+For GPoker we need to have a root node that allways returns a poker move which is returned to the game.\\
+~\\
+A GPlayer, for example, uses the root node "IfMove" which has three children:\\
+The very left child is the if-branch, that needs to return a boolean type.\\
+The middle child is the then-branch and returns a move.\\
+And at last, the right child represents the else-branch, which also returns a move.\\
+
+\newpage
+
+\subsubsection{Example}
+\begin{center}
+	\includegraphics[width=0.8\textwidth]{tree1.png}
+\end{center}
+This very simple tree represents the following strategy:
+~\\
+If 0.6 (Two to Ace normalized in 0 to 1) is less than or equal to the player's lower hand card, make a call.\\
+Else, check the game. Note that checking can also mean folding, in case there has been a raise.
+
+\subsection{Evolution}
+There are two fundamentally different ways for evolution to change a tree, namely crossover and mutation.
+
+\subsubsection{Crossover}
+Crossover takes two individual players and swaps subtrees in a random point.
+Of course both subtrees need to have the same return type.
+This method is more common, since good players that were not sorted out by evolution usually have good subtrees.
+So the the well-playing trees are not completely destroyed by the process of evolution, but there is much room for new combinations.
+
+\begin{center}
+	\includegraphics[width=1.0\textwidth]{tree_crossover.png}
+\end{center}
+
+\subsubsection{Mutation}
+In contrast to Crossover, mutation does not even need two individual trees for change.
+Either a single node is chosen randomly and changed to some other random node that returns the same type.
+Or even a randomly chosen subtree can be changed.
+Mutation has to be used carefully, since random changes can change a very good player to be useless.
+
+\begin{center}
+	\includegraphics[width=1.0\textwidth]{tree_mutation.png}
+\end{center}
+
+\newpage
+\section{Implementation}
+\subsection{Initial changes}
+As mentioned above, our focus in this work was to change existing nodes and/or add
+new nodes to the chromosome tree. When we first evaluated the existing code, especially the implemented functions and terminals, we observed that the raise value was randomly calculated [0.0 to 2.0 * pot]. In this case, the value was neither decided nor influenced by evolution. \\
+Now raising plays a vital part in a Texas Hold'em No Limit poker game and this was also noticed by the evolution which often evolved players who's tree was only a raise node.
+Therefore we decided to concentrate on making the raise node accessible to the evolution so its value can be part of the evolution.
+\\ \\ 
+The first attempt was to allow the raise leaf-node to have a subtree which would potentially get evolved. For this purpose we introduced a new function node called "IfDouble". It evaluates a boolean expression and returns a double value wich is the factor of the raise [i.e 1,9397 * pot size]. In this case, a ConstMove terminal could either be a terminal or a function node.
+
+\begin{center}
+	\includegraphics[width=0.86\textwidth]{raise_subtree_1.png}
+	\textit{\textbf{Figure 1: }Example tree of an evolved player with a IfDouble-subtree appended to raise} 
+\end{center}
+
+This however lead to undesirable mutations like the following:
+\begin{itemize}
+	\item GPoker produced IfDouble-Nodes that only have one child
+	(ConstBoolean).
+	\item GPoker produced ConstMove(RAISE) Nodes that have a
+	ConstDouble child which do not get evaluated.
+\end{itemize}
+
+\newpage
+\subsection{Final implementation}
+\subsubsection{Raise}
+As a final solution, the raise move was moved out from ConstMove and redesigned as a independent function node. It still has only one child but now the lines between a function and a terminal are not blurred. With this change, the evoluion can now remove raise entirely if it finds that this is not a good functions. In addition to that, it is now easier to mutate the factor of a raise and which is more dynamic and granular. \\
+This is because a raise subtree can now grow or shrink and build up different calculations for the raise factor like multiplying the high card with another factor. Also any node returning double can be attached to the new raise.
+
+\subsubsection{Fold}
+After some testing we noticed that sometimes a player would emerge that would fold the entire time. A fold-only player does not make any sense since it would lead gradually to the loss of all chips of that player. Although this is a crucial mechanism and a valid move, we deletet fold from the ConstMove class to avoid this kind of players and it now can only return a "Call" or "Check". \\
+This is possible because the \textit{checkMove(Player player, Move move)} method of the "Dealer" class handles invalid player moves and automatically folds [i.e. when a player checks in response to a raise].
+
+\begin{center}
+	\includegraphics[width=0.95\textwidth]{NewRaise.png}
+	\textit{\textbf{Figure 2: }Example tree of an evolved player after the final implementation} 
+\end{center}
+
+\newpage
+\section{Experiments}
+For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player was the one without any changes to his funcitons and terminals and had no other changes made to it by our group. The second player had the aforementioned changes applied. After all test runs were completet the fitness of the old and new player were confronted.
+
+\subsection{Setup}
+\subsubsection{Evolving against the PatternPlayer}
+\textbf{ BIN MIR NICHT SICHER OB HIER WAS REIN SOLLTE. DER CODE VOM PATTERNPLAYER IS EWIG LANG UND DEN IN WORTEN ZU BESCHREIBEN IS AUCH A SCHAS!!!!! \\ \\
+	EURE MEINUNG!!!}
+\subsubsection{Evolving against the TestPlayer}
+One TestPlayer was choosen from previously evolved players that made sane moves and played as follows.
+\\
+\begin{lstlisting}
+	if (getCards().get(1).getRank() < Card.JACK) {
+	  if (dealer.getCallBet(this) < 9)
+		move.setType(Move.CALL);
+	  else
+		move.setType(Move.CHECK);
+	}else
+	  move.setBet((int)(0.9849 * dealer.getPot()));
+		
+	return move;
+\end{lstlisting}
+\\
+In short, this player was playing more defensively when his highest card was lower than a JACK and only made a "Call" or "Check". If his highest card was greater he played aggressive and raised 0.9849 * pot-size.
+
+\subsubsection{Experiment parameter}
+For both experiments the parameter were choosen as follows: \\
+\begin{itemize}
+	\item Game Mode:       Doyle
+	\item Test-Runs:       8 for each player
+	\item Generations:     10.000
+	\item Population-Size: 100
+	\item Rounds:          1000
+	\item Mutation-Rate:   0.0369
+\end{itemize}
+
+\subsection{Results}
+\subsubsection{GPlayer VS. PatternPlayer}
+\begin{center}
+	\includegraphics[width=1\textwidth]{gp_vs_pp.png}
+\end{center}
+
+\subsubsection{GPlayer VS. TestPlayer}
+\begin{center}
+	\includegraphics[width=1\textwidth]{gp_vs_tp.png}
+\end{center}
 
 \newpage
 
