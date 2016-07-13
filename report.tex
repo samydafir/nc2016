@@ -75,9 +75,9 @@ Correspondence to: \\
 \end{titlepage}
 
 %Table of Content
-% \setcounter{page}{1}
-% \pagenumbering{Roman} %I,II,III... in the TOC
-% \tableofcontents
+\setcounter{page}{1}
+\pagenumbering{Roman} %I,II,III... in the TOC
+\tableofcontents
 
 \clearpage
 \pagestyle{headings}
@@ -101,67 +101,11 @@ Additionally we will do some fine-tuning of evolutionary-parameters like populat
 
 \newpage
 
-\section{Genetic Programming}
-As mentioned, a GP Player is represented by a so-called chromosome tree. Or more exactly, the poker player's strategy is represented by this tree.\\
-This means, that each player's tree has a root node and more or less child nodes, where nodes with children are called functions and leave nodes are called terminals.\\
-From the very beginning there is a fixed set of functions and terminals available.
-At first, a population of GP Players with random nodes are created which play a predetermined number of games.
-In each generation there is a chance for every player that it's tree is changed by mutation or crossover.
-
-\subsection{Chromosome Tree}
-\subsubsection{Functions}
-Functions play the most important role in a GP Player's strategy, since functions are the decision-makers.\\
-They can have one or more child nodes and always are of a specific return type. Further they need to have a parent node (except the root function).
-Child nodes can either be terminals or functions, where it is also very important that the child nodes return the very type, that the function expects.\\
-As an example we could define a lower-than function that expects floating point values from both children and returns a boolean value to it's parent node.
-
-\subsubsection{Terminals}
-Terminals are the leave nodes in a player's tree. They cannot have child nodes but return a certain type themselves.\\
-This does not necessarily mean that a terminal's value has to be static. They can have dynamic values like "pot size" or "higher hand card". 
-
-\subsubsection{Root}
-The root node it a special function, since it does not have any parent nodes.\\
-For a proper evaluation of the player's tree it needs to be rooted, so we can start making further decisions at one point.
-For GPoker we need to have a root node that allways returns a poker move which is returned to the game.\\
-~\\
-A GPlayer, for example, uses the root node "IfMove" which has three children:\\
-The very left child is the if-branch, that needs to return a boolean type.\\
-The middle child is the then-branch and returns a move.\\
-And at last, the right child represents the else-branch, which also returns a move.\\
+\input{gp.tex}
 
 \newpage
 
-\subsubsection{Example}
-\begin{center}
-\includegraphics[width=0.8\textwidth]{tree1.png}
-\end{center}
-This very simple tree represents the following strategy:
-~\\
-If 0.6 (Two to Ace normalized in 0 to 1) is less than or equal to the player's lower hand card, make a call.\\
-Else, check the game. Note that checking can also mean folding, in case there has been a raise.
-
-\subsection{Evolution}
-There are two fundamentally different ways for evolution to change a tree, namely crossover and mutation.
-
-\subsubsection{Crossover}
-Crossover takes two individual players and swaps subtrees in a random point.
-Of course both subtrees need to have the same return type.
-This method is more common, since good players that were not sorted out by evolution usually have good subtrees.
-So the the well-playing trees are not completely destroyed by the process of evolution, but there is much room for new combinations.
-
-\begin{center}
-\includegraphics[width=1.0\textwidth]{tree_crossover.png}
-\end{center}
-
-\subsubsection{Mutation}
-In contrast to Crossover, mutation does not even need two individual trees for change.
-Either a single node is chosen randomly and changed to some other random node that returns the same type.
-Or even a randomly chosen subtree can be changed.
-Mutation has to be used carefully, since random changes can change a very good player to be useless.
-
-\begin{center}
-\includegraphics[width=1.0\textwidth]{tree_mutation.png}
-\end{center}
+\input{frameworks.tex}
 
 \newpage
 
