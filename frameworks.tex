@@ -1,12 +1,12 @@
 \section{Frameworks}
-This project requires the use and interaction two frameworks namely GPoker and JEvolution. In the following both frameworks and their interactions with one another will be briefly explained.
+This project requires the use and interaction of two frameworks, namely GPoker and JEvolution. In the following, both frameworks and their interactions with one another will be briefly explained.
 
 \subsection{JEvolution}
 JEvolution is the most essential part of this project. JEvolution provides functionality for Evolutionary Computation including Evolutionary Algorithms and Genetic Programming.
 We use the latter. JEvolution completely implements the evolution of syntax trees including selection, mutation and crossover. Syntax trees are made up from objects of type
-$ProgramNode$. Each node includes an array containing all child nodes. In order for the evolution to work a set of function- and terminal-nodes has to be provided. These
-are implemented as subclasses of the $ProgramNode$ class. Selection is conducted based on the computed fitness of every syntax tree. For our application of the framework
-nodes are provided by the GPoker framework and by us. In order for JEvolution to condict evolution correctly a function calculating a tree's fitness has to be supplied (fitness function). In
+$ProgramNode$. Each node includes an array containing all child nodes. In order for evolution to work, a set of function- and terminal-nodes has to be provided. These
+are implemented as subclasses of the $ProgramNode$ class. Selection is conducted based on the computed fitness of every syntax tree. For our application of the framework,
+nodes are provided by the GPoker framework and by us. In order for JEvolution to conduct evolution correctly, a function calculating a tree's fitness has to be supplied (fitness function). In
 our case this function has to somehow compute how good a syntax tree (here: representing a poker player) is able to complete the given task (in this case: play poker and win
 chips). Details about Genetic Programming are supplied in chapter \ref{sec:genprog}.
 
@@ -19,15 +19,15 @@ poker player might perform. Parameters like game-mode, competing players, big/sm
 \subsection{Interaction}
 How does the interaction of these two frameworks enable us to evolve a poker player?  \\
 JEvolution evolves syntax trees made up from $ProgramNode$ objects. It does not care about what the functionality of a node is. As long
-as it's specified as a subclass of $ProgramNode$ it can be used in a syntax tree.
-Once GPoker detects that a GPlayer (evolved player) is specified in the gpoker.xml file it communicates with JEvolution to invoke the evolutionary process.  GPoker provides nodes 
+as it is specified as a subclass of $ProgramNode$ it can be used in a syntax tree.
+Once GPoker detects that a GPlayer (evolved player) is specified in the gpoker.xml file, it communicates with JEvolution to invoke the evolutionary process.  GPoker provides nodes 
 for constructing syntax trees. JEvolution then builds and evolves these trees made up from the supplied nodes. A vital component of the evolutionary process is the calculation of the fitness value. In the case
 of the evolution of a poker player the fitness value should of course reflect the player's skill. The most intuitive way of defining a player's skill is measuring the amount of won/lost chips.
 This value can be determined by letting the player play games of poker against other players and is then recorded as the player's fitness. JEvolution can then execute the selection part
 of the evolutionary process using this fitness value provided by GPoker.
 \\
-Interactions can be summarized as follows:
+Interactions can be summarized as followed:
 \begin{itemize}
-	\item GPoker detects an evolved player in the xml file and invokes JEvolution providing poker specific nodes.
+	\item GPoker detects an evolved player in the xml file and invokes JEvolution, providing poker specific nodes.
 	\item JEvolution builds syntax trees and uses GPoker to calculate fitness values of individual syntax trees.
 \end{itemize}
