@@ -198,7 +198,7 @@ This however led to undesirable mutations like the following:
 \newpage
 \subsection{Final implementation}
 \subsubsection{Raise}
-As a final solution, the raise move was moved out from ConstMove and redesigned as an independent function node. It still has only one child but now the lines between a function and a terminal are not blurred anymore. With this change, the evolution can now remove raise entirely if it finds that it is not a good functions. In addition to that, it is now easier to mutate the factor of a raise which is more dynamic and granular. \\
+As a final solution, the raise move was moved out from ConstMove and redesigned as an independent function node. It still has only one child but now the lines between a function and a terminal are not blurred anymore. With this change, the evolution can now remove raise entirely if it finds that it is not a good function. Additionally, it is now easier to mutate the factor of a raise which is more dynamic and granular. \\
 This is due to a raise subtree now being able to grow or shrink and build up different calculations for the raise factor like multiplying the high card with another factor. Also any node returning double can be attached to the new raise node.
 
 \subsubsection{Fold}
@@ -212,7 +212,7 @@ This is possible because the \textit{checkMove(Player player, Move move)} method
 
 \newpage
 \section{Experiments}
-For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player was the one with the original function- and terminal-set and had no additional alterations. The second player had the aforementioned changes applied. After all test runs were completed the fitness of the old and new player were compared.
+For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player was the one with the original function- and terminal-set and had no additional alterations. The second player had the aforementioned changes applied. After all test runs were completed, the fitness of the old and new player were compared.
 
 \subsection{Setup}
 Nodes used:
@@ -221,7 +221,7 @@ Nodes used:
 \end{flushleft}	
 
 \subsubsection{Evolution against PatternPlayer}
-The way the PatternPlayer plays is by evaluting his hand value and the overall values of the cards [deviding their rank by an ace and adding those values together].
+The PatternPlayer plays by evaluting his hand value and the overall values of the cards [deviding their rank by an ace and adding those values together].
 The move made depends on their normalized value.
 
 \subsubsection{Evolution against TestPlayer}
