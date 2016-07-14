@@ -212,13 +212,17 @@ This is possible because the \textit{checkMove(Player player, Move move)} method
 
 \newpage
 \section{Experiments}
-For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player was the one with the original function- and terminal-set and no additional alterations. The second player had the aforementioned changes applied. After all test runs were completed the fitness of the old and new player were compared.
+For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player was the one with the original function- and terminal-set and had no additional alterations. The second player had the aforementioned changes applied. After all test runs were completed the fitness of the old and new player were compared.
 
 \subsection{Setup}
-\subsubsection{Evolution against PatternPlayer}
+Nodes used:
+\begin{flushleft}
+	\includegraphics[width=.3\textwidth,left]{node_table.png}
+\end{flushleft}	
 
-\textbf{ BIN MIR NICHT SICHER OB HIER WAS REIN SOLLTE. DER CODE VOM PATTERNPLAYER IS EWIG LANG UND DEN IN WORTEN ZU BESCHREIBEN IS AUCH A SCHAS!!!!! \\ \\
-	EURE MEINUNG!!!}
+\subsubsection{Evolution against PatternPlayer}
+The way the PatternPlayer plays is by evaluting his hand value and the overall values of the cards [deviding their rank by an ace and adding those values together].
+The move made depends on their normalized value.
 
 \subsubsection{Evolution against TestPlayer}
 One TestPlayer was choosen from previously evolved players that made sane moves and played as follows.
@@ -237,8 +241,9 @@ One TestPlayer was choosen from previously evolved players that made sane moves 
 \\
 In short, this player was playing more defensively and only performed a "Call" or "Check" when his highest card was lower than a JACK. If his highest card was better he played aggressively and raised with a value of 0.9849 * pot-size.
 
+\newpage
 \subsubsection{Experiment parameter}
-For both experiments the parameter were chosen as follows: \\
+For both experiments the parameter were chosen as follows: 
 \begin{itemize}
 	\item Game Mode:       Doyle
 	\item Test-Runs:       8 for each player
@@ -247,17 +252,43 @@ For both experiments the parameter were chosen as follows: \\
 	\item Rounds:          1000
 	\item Mutation-Rate:   0.0369
 \end{itemize}
+\\ 
+\\
+A generation of 10.000 seems to be sufficient for an overall assessment of the fitness. It was noticed from previous test runs, with a generation size of 20.000, that the best players would emerge all within the threshold of 10.000 .
 
 \subsection{Results}
+The following diagrams show the fitness of the old and new player of each run. \\
+On the y-axis the fitness is plotted and the x-axis displays one run. The values had been sorted in an ascending order to have a better interpretation basis because the order of the runs do not play any particular role. In short, the diagram does not show a function. This needs to be kept in mind when assessing the diagrams.
 \subsubsection{Evolution against PatternPlayer}
+The evolution against the PatternPlayer resulted in a disimprovement of the GPlayer.  \\ \\
+The average calculated fitness of the new GPlayer: 102001\\
+The average calculated fitness of the old GPlayer: 113168
 \begin{center}
-	\includegraphics[width=1\textwidth]{gp_vs_pp.png}
+	\includegraphics[width=.9\textwidth]{gp_vs_pp_1.png}
 \end{center}
+\\
+\textbf{Evolved trees against the PatternPlayer}\\ \\
+\texttt{ifm <=d cd[0,8291] cd[0,2086] rcm[Check] rm /d vard[1] *d *d cd[0,5560] cd[0,0537] *d cd[0,0519] cd[0,9908]} \\ \\
+\texttt{ifm <=d cd[0,1068] *d cd[0,7747] vard[1] rm cd[0,4432] rm *d vard[0] cd[0,9040]}\\ \\
+\texttt{ifm <=d vard[1] *d cd[0.5569] vard[0] ifm <=d cd[0.3677] vard[0] rm *d cd[0.0629] cd[0.1581] ncm[Check] ncm[Call]}\\ \\
+\texttt{ifm <=d vard[0] cd[0,6326] ifm <=d vard[1] *d cd[0,3969] vard[0] ncm[Check] ncm[Call] rm cd[0,5256]}\\ \\
+\texttt{ifm <=d cd[0,5573] vard[0] rm *d cd[0,7988] *d cd[0,3149] cd[0,3444] ifm <=d *d vard[0] cd[0,5125] vard[1] ncm[Call] ncm[Check]}
 
 \subsubsection{Evolution against TestPlayer}
+Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. Also notable is that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer. \\ \\
+The average calculated fitness of the new GPlayer: 31153\\
+The average calculated fitness of the old GPlayer: 26710
+
 \begin{center}
-	\includegraphics[width=1\textwidth]{gp_vs_tp.png}
+	\includegraphics[width=.9\textwidth]{gp_vs_tp_1.png}
 \end{center}
+\\
+\textbf{Evolved trees against the TestPlayer}\\ \\
+\texttt{ifm <=d cd[0.5750] vard[0] rm cd[0.3671] ifm <=d vard[0] vard[1] ncm[Call] ncm[Check]} \\ \\
+\texttt{ifm <=d cd[0.6027] vard[0] rm cd[0.8510] ifm <=d *d *d vard[0] cd[0.5788] cd[0.9339] vard[1] ncm[Call] ncm[Check]}\\ \\
+\texttt{ifm <=d cd[0,1670] *d cd[0,3417] *d cd[0,7303] cd[0,9367] rm cd[0,9624] ncm[Check]}\\ \\
+\texttt{ifm <=d cd[0,8291] cd[0,2086] rcm[Check] rm /d vard[1] *d *d cd[0,5560] cd[0,0537] *d cd[0,0519] cd[0,9908]}\\ \\
+\texttt{ifm <=d cd[0,4988] /d *d cd[0,2995] cd[0,5651] cd[0,0693] rm /d cd[0,5110] *d *d vard[1] vard[0] ifd cb[false] cd[0,3461] cd[0,5974] rcm[Check]}
 
 \newpage
 
