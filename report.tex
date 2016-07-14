@@ -217,7 +217,7 @@ For the experiments we evolved two GPlayers both against a "PatternPlayer" and a
 \subsection{Setup}
 Nodes used:
 \begin{flushleft}
-	\includegraphics[width=.3\textwidth,left]{node_table.png}
+	\includegraphics[width=.3\textwidth]{node_table.png}
 \end{flushleft}	
 
 \subsubsection{Evolution against PatternPlayer}
@@ -238,7 +238,7 @@ One TestPlayer was choosen from previously evolved players that made sane moves 
 		
 	return move;
 \end{lstlisting}
-\\
+
 In short, this player was playing more defensively and only performed a "Call" or "Check" when his highest card was lower than a JACK. If his highest card was better he played aggressively and raised with a value of 0.9849 * pot-size.
 
 \newpage
@@ -251,9 +251,8 @@ For both experiments the parameter were chosen as follows:
 	\item Population-Size: 100
 	\item Rounds:          1000
 	\item Mutation-Rate:   0.0369
-\end{itemize}
-\\ 
-\\
+\end{itemize} 
+
 A generation of 10.000 seems to be sufficient for an overall assessment of the fitness. It was noticed from previous test runs, with a generation size of 20.000, that the best players would emerge all within the threshold of 10.000 .
 
 \subsection{Results}
@@ -266,8 +265,7 @@ The average calculated fitness of the old GPlayer: 113168
 \begin{center}
 	\includegraphics[width=.9\textwidth]{gp_vs_pp_1.png}
 \end{center}
-\\
-\textbf{Evolved trees against the PatternPlayer}\\ \\
+\textbf{Evolved trees against the PatternPlayer}\\ 
 \texttt{ifm <=d cd[0,8291] cd[0,2086] rcm[Check] rm /d vard[1] *d *d cd[0,5560] cd[0,0537] *d cd[0,0519] cd[0,9908]} \\ \\
 \texttt{ifm <=d cd[0,1068] *d cd[0,7747] vard[1] rm cd[0,4432] rm *d vard[0] cd[0,9040]}\\ \\
 \texttt{ifm <=d vard[1] *d cd[0.5569] vard[0] ifm <=d cd[0.3677] vard[0] rm *d cd[0.0629] cd[0.1581] ncm[Check] ncm[Call]}\\ \\
@@ -282,8 +280,8 @@ The average calculated fitness of the old GPlayer: 26710
 \begin{center}
 	\includegraphics[width=.9\textwidth]{gp_vs_tp_1.png}
 \end{center}
-\\
-\textbf{Evolved trees against the TestPlayer}\\ \\
+
+\textbf{Evolved trees against the TestPlayer}\\
 \texttt{ifm <=d cd[0.5750] vard[0] rm cd[0.3671] ifm <=d vard[0] vard[1] ncm[Call] ncm[Check]} \\ \\
 \texttt{ifm <=d cd[0.6027] vard[0] rm cd[0.8510] ifm <=d *d *d vard[0] cd[0.5788] cd[0.9339] vard[1] ncm[Call] ncm[Check]}\\ \\
 \texttt{ifm <=d cd[0,1670] *d cd[0,3417] *d cd[0,7303] cd[0,9367] rm cd[0,9624] ncm[Check]}\\ \\
