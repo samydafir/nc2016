@@ -291,14 +291,15 @@ A generation of 10.000 seemed to be sufficient for an overall assessment of the 
 The following diagrams show the fitness of the old and new player for each run. \\
 The fitness is plotted on the y-axis whereas the x-axis displays the number of the run in which the result was recorded. Due to the order the values were recorded in not being in any way relevant the values have been sorted in an ascending order to have a better basis for interpretation. In short, the diagram does not show a function. This needs to be kept in mind when assessing the diagrams.
 \subsubsection{Evolution against PatternPlayer}
-During evolution against the PatternPlayer it was noted that the changes led to a deterioration of the GPlayer's fitness.  \\ \\
-The average calculated fitness of the new GPlayer: 102001\\
-The average calculated fitness of the old GPlayer: 113168
+During evolution against the PatternPlayer it was noted that the changes led to a deterioration of the GPlayer's fitness.\\
+\\
+Average calculated fitness of the new GPlayer: 102001\\
+Average calculated fitness of the old GPlayer: 113168
 \begin{center}
 	\includegraphics[width=.9\textwidth]{gp_vs_pp_1.png}
 \end{center}
 
-\textbf{Evolved trees against the PatternPlayer}\\ 
+\subsubsection{Evolved trees against the PatternPlayer}
 \texttt{ifm <=d cd[0,8291] cd[0,2086] rcm[Check] rm /d vard[1] *d *d cd[0,5560] cd[0,0537] *d cd[0,0519] cd[0,9908]} \\ \\
 \texttt{ifm <=d cd[0,1068] *d cd[0,7747] vard[1] rm cd[0,4432] rm *d vard[0] cd[0,9040]}\\ \\
 \texttt{ifm <=d vard[1] *d cd[0.5569] vard[0] ifm <=d cd[0.3677] vard[0] rm *d cd[0.0629] cd[0.1581] ncm[Check] ncm[Call]}\\ \\
@@ -306,22 +307,23 @@ The average calculated fitness of the old GPlayer: 113168
 \texttt{ifm <=d cd[0,5573] vard[0] rm *d cd[0,7988] *d cd[0,3149] cd[0,3444] ifm <=d *d vard[0] cd[0,5125] vard[1] ncm[Call] ncm[Check]}
 
 \subsubsection{Evolution against TestPlayer}
-Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. It was also notable that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer. This is most likely due to the TestPlayer unlike the PatternPlayer making objectively decent moves which results in the GPlayer having a more difficult opponent and hence winning less chips.\\ \\
-
-The average calculated fitness of the new GPlayer: 31153\\
-The average calculated fitness of the old GPlayer: 26710
+Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. It was also notable that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer. This is most likely due to the TestPlayer unlike the PatternPlayer making objectively decent moves which results in the GPlayer having a more difficult opponent and hence winning less chips.\\
+\\
+Average calculated fitness of the new GPlayer: 31153\\
+Average calculated fitness of the old GPlayer: 26710
 
 \begin{center}
 	\includegraphics[width=.9\textwidth]{gp_vs_tp_1.png}
 \end{center}
 
-\textbf{Evolved trees against the TestPlayer}\\
+\subsubsection{Evolved trees against the TestPlayer}
 \texttt{ifm <=d cd[0.5750] vard[0] rm cd[0.3671] ifm <=d vard[0] vard[1] ncm[Call] ncm[Check]} \\ \\
 \texttt{ifm <=d cd[0.6027] vard[0] rm cd[0.8510] ifm <=d *d *d vard[0] cd[0.5788] cd[0.9339] vard[1] ncm[Call] ncm[Check]}\\ \\
 \texttt{ifm <=d cd[0,1670] *d cd[0,3417] *d cd[0,7303] cd[0,9367] rm cd[0,9624] ncm[Check]}\\ \\
 \texttt{ifm <=d cd[0,8291] cd[0,2086] rcm[Check] rm /d vard[1] *d *d cd[0,5560] cd[0,0537] *d cd[0,0519] cd[0,9908]}\\ \\
 \texttt{ifm <=d cd[0,4988] /d *d cd[0,2995] cd[0,5651] cd[0,0693] rm /d cd[0,5110] *d *d vard[1] vard[0] ifd cb[false] cd[0,3461] cd[0,5974] rcm[Check]}
 
+\newpage
 \section{Conclusion}
 Theoretically speaking our alterations provide the player with more information about the current state of the game. This enables the evolution of factors on which the player decides on how high the raise value
 shall be. So from a theoretical point of view it is pretty clear that these alterations will lead to the evolution yielding better players. Analyzing our results this assumption can only be confirmed partly. As has been shown the improvement/deterioration is highly dependent on the player against which the GPlayer plays during evolution. This is most likely due to the computer players using different strategies of which one can be easily exploited by the GPlayer using the new function-set whereas the other seems to be more robust. Finally we conclude that although there have been some negative results while playing against the PatternPlayer the result is quite positive. The players emerging after the alterations were made seem to make good decisions and queries (from a poker point of view). Additionally our changes have led to a fairly significant improvement when playing against a player who makes decisions and moves a decent human poker player might make (TestPlayer). 
