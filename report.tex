@@ -230,11 +230,11 @@ This however led to undesirable mutations like the following:
 \newpage
 \subsection{Final implementation}
 \subsubsection{Raise}
-As a final solution, the raise move was moved out from ConstMove and redesigned as an independent function node. It still has only one child but now the lines between a function and a terminal are not blurred anymore. With this change, the evolution can now remove raise entirely if it finds that it is not a good function. Additionally, it is now easier to mutate the factor of a raise which is more dynamic and granular. \\
+As a final solution, the raise move was moved out of ConstMove and implemented as an independent function node. It still has only one child but now the lines between functions and terminals are no longer blurred. With this change, the evolution can now remove raise entirely if it finds that it is not a good function. Additionally, it is now easier to mutate the factor of a raise which is more dynamic and granular. \\
 This is due to a raise subtree now being able to grow or shrink and build up different calculations for the raise factor like multiplying the high card with another factor. Also any node returning double can be attached to the new raise node.
 
 \subsubsection{Fold}
-After some testing we noticed that sometimes a player would emerge that would always fold. A fold-only player does not make any sense since it would gradually lead to the loss of all the player's chips. Although this is a crucial mechanism and a valid move, we deleted fold from the ConstMove class to avoid these kinds of players. ConstMove is now limited to returning a "Call" or "Check". \\
+After some testing we noticed that sometimes a player would emerge that always folded. A fold-only player does not make any sense since it would gradually lead to the loss of all the player's chips. Although this is a crucial mechanism and a valid move, we deleted fold from the ConstMove class to avoid these kinds of players. ConstMove is now limited to returning a "Call" or "Check". \\
 This is possible because the \textit{checkMove(Player player, Move move)} method of the "Dealer" class handles invalid player moves and automatically folds [i.e. when a player checks in response to a raise].
 
 \begin{center}
@@ -244,7 +244,7 @@ This is possible because the \textit{checkMove(Player player, Move move)} method
 
 \newpage
 \section{Experiments}
-For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player was the one with the original function- and terminal-set and had no additional alterations. The second player had the aforementioned changes applied. After all test runs were completed, the fitness of the old and new player were compared.
+For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player had the original function- and terminal-set without any additional alterations available. The second player had the aforementioned changes applied. After all test runs were completed, the fitness of the old and new player were compared.
 
 \subsection{Setup}
 Nodes used:
@@ -253,7 +253,7 @@ Nodes used:
 \end{flushleft}	
 
 \subsubsection{Evolution against PatternPlayer}
-The PatternPlayer plays by evaluting his hand value and the overall values of the cards [deviding their rank by an ace and adding those values together].
+The PatternPlayer plays by evaluating his hand value and the overall values of the cards [dividing their rank by an ace and adding them].
 The move made depends on their normalized value.
 
 \subsubsection{Evolution against TestPlayer}
@@ -271,11 +271,11 @@ One TestPlayer was choosen from previously evolved players that made sane moves 
 	return move;
 \end{lstlisting}
 
-In short, this player was playing more defensively and only performed a "Call" or "Check" when his highest card was lower than a JACK. If his highest card was better he played aggressively and raised with a value of 0.9849 * pot-size.
+In short, this player was playing more defensively and only performed a "Call" or "Check" when his highest card was lower than a JACK. If his highest card was better he played more aggressively and raised with a value of 0.9849 * pot-size.
 
 \newpage
 \subsubsection{Experiment parameter}
-For both experiments the parameter were chosen as follows: 
+For both experiments the parameters were chosen as follows: 
 \begin{itemize}
 	\item Game Mode:       Doyle
 	\item Test-Runs:       8 for each player
@@ -285,13 +285,13 @@ For both experiments the parameter were chosen as follows:
 	\item Mutation-Rate:   0.0369
 \end{itemize} 
 
-A generation of 10.000 seems to be sufficient for an overall assessment of the fitness. It was noticed from previous test runs, with a generation size of 20.000, that the best players would emerge all within the threshold of 10.000.
+A generation of 10.000 seemed to be sufficient for an overall assessment of the fitness. In previous previous test runs using 20.000 generation it was noticed that no best player would emerge after the 10.000th generation.
 
 \subsection{Results}
-The following diagrams show the fitness of the old and new player of each run. \\
-On the y-axis the fitness is plotted and the x-axis displays one run. The values had been sorted in an ascending order to have a better interpretation basis because the order of the runs do not play any particular role. In short, the diagram does not show a function. This needs to be kept in mind when assessing the diagrams.
+The following diagrams show the fitness of the old and new player for each run. \\
+The fitness is plotted on the y-axis whereas the x-axis displays the number of the run in which the result was recorded. Due to the order the values were recorded in not being in any way relevant the values have been sorted in an ascending order to have a better basis for interpretation. In short, the diagram does not show a function. This needs to be kept in mind when assessing the diagrams.
 \subsubsection{Evolution against PatternPlayer}
-The evolution against the PatternPlayer resulted in a disimprovement of the GPlayer.  \\ \\
+During evolution against the PatternPlayer it was noted that the changes led to a deterioration of the GPlayer's fitness.  \\ \\
 The average calculated fitness of the new GPlayer: 102001\\
 The average calculated fitness of the old GPlayer: 113168
 \begin{center}
@@ -305,7 +305,7 @@ The average calculated fitness of the old GPlayer: 113168
 \texttt{ifm <=d cd[0,5573] vard[0] rm *d cd[0,7988] *d cd[0,3149] cd[0,3444] ifm <=d *d vard[0] cd[0,5125] vard[1] ncm[Call] ncm[Check]}
 
 \subsubsection{Evolution against TestPlayer}
-Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. Also notable is that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer. \\ \\
+Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. It was also notable that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer. This is most likely due to the TestPlayer unlike the PatternPlayer making objectively decent moves which results in the GPlayer having a more difficult opponent and hence winning less chips.\\ \\
 The average calculated fitness of the new GPlayer: 31153\\
 The average calculated fitness of the old GPlayer: 26710
 
