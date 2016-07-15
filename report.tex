@@ -90,12 +90,12 @@ Correspondence to: \\
 \abstract{
 The goal of this project is to evolve a GP poker player by means of genetic programming techniques.
 The GP Players evolve over generations through selection, mutation and cross mutation of their chromosome tree. \\
-A good computer player has to emerge after a sufficient amount of generation have played in a "heads up" texas-hold-em no limit poker game.
+A good computer player has to emerge after a sufficient amount of generations have played in a "heads up" texas-hold-em no limit poker game.
 Good players are determined by their fitness value which is determined through assessing a player's success after each poker round. \\
-The focus of our work lies in the chromosome tree.
+The focus of our work lies on the chromosome tree.
 Although the current API provides some basics functions for that tree, it is likely that they are not sufficient for the evolution of a good player.
-The second focus lies on the poker game itself.
-We have to determine what kind and how much information a player needs in order to evolve properly without interfering with its evolution.
+Further focus lies on the poker game itself.
+We have to determine what kind of and how much information a player needs in order to evolve properly without interfering with its evolution.
 This means, that we don't want to "tell" the player what the next best action is, but rather let evolution decide.
 Additionally we will do some fine-tuning of evolutionary-parameters like population size or number of generations to achieve the best possible result.
 }
@@ -106,31 +106,63 @@ Additionally we will do some fine-tuning of evolutionary-parameters like populat
 
 \newpage
 
-\input{frameworks.tex}
+\section{Frameworks}
+This project requires the use and interaction of two frameworks, namely GPoker and JEvolution. In the following, both frameworks and their interaction with one another will be briefly explained.
+
+\subsection{JEvolution}
+JEvolution is the most essential part of this project. JEvolution provides functionality for Evolutionary Computation including Evolutionary Algorithms and Genetic Programming which is
+used in this project. JEvolution completely implements the evolution of syntax trees including selection, mutation and crossover. Syntax trees are made up from objects of type
+$ProgramNode$. Each node includes an array containing all child nodes. In order for evolution to work, a set of function- and terminal-nodes has to be provided. These
+are implemented as subclasses of the $ProgramNode$ class. Selection is conducted based on the computed fitness of every syntax tree. For our application of the framework,
+nodes are provided by the GPoker framework and by us. In order for JEvolution to conduct evolution correctly, a function calculating a tree's fitness has to be supplied (fitness function). In
+our case this function has to somehow compute how good a syntax tree (here: representing a poker player) is able to complete the given task (in this case: play poker and win
+chips). Details about Genetic Programming are supplied in chapter \ref{sec:genprog}.
+
+\subsection{GPoker}
+GPoker is a poker-framework by Helmut A. Mayer. It provides a set of classes implementing a working poker setup including several game modes, different players and the
+possibility for a human player to play against computer players. The most essential functionality for our application is the possibility to include evolved players and hence
+use the framework to do genetic programming. GPoker provides nodes which are subclasses of the JEvolution $ProgramNode$ class representing decisions, actions and queries a
+poker player might perform. Parameters like game-mode, competing players, big/small blind and rounds to play can be specified in the gpoker.xml file.
+
+\subsection{Interaction}
+How does the interaction of these two frameworks enable us to evolve a poker player?  \\
+JEvolution evolves syntax trees made up from $ProgramNode$ objects. It does not care about what the functionality of a node is. As long
+as it is specified as a subclass of $ProgramNode$ it can be used in a syntax tree.
+Once GPoker detects that a GPlayer (evolved player) is specified in the gpoker.xml file, it communicates with JEvolution to invoke the evolutionary process.  GPoker provides nodes 
+for constructing syntax trees. JEvolution then builds and evolves these trees made up from the supplied nodes. A vital component of the evolutionary process is the calculation of the fitness value. In the case
+of the evolution of a poker player the fitness value should of course reflect the player's skill. The most intuitive way of defining a player's skill is measuring the amount of won/lost chips.
+This value can be determined by letting the player play games of poker against other players and is then recorded as the player's fitness. JEvolution can then execute the selection part
+of the evolutionary process using this fitness value provided by GPoker.
+\\
+Interactions can be summarized as follows :
+\begin{itemize}
+	\item GPoker detects an evolved player in the xml file and invokes JEvolution, providing poker specific nodes.
+	\item JEvolution builds syntax trees and uses GPoker to calculate fitness values of individual syntax trees.
+\end{itemize}
 
 \newpage
 \section{Genetic Programming}
 \label{sec:genprog}
 As mentioned, a GP Player is represented by a so-called chromosome tree. Or more precisely, the poker player's strategy is represented by this tree.\\
-This means, that each player's tree has a root node and zero or more child nodes, where nodes with children are called functions and leave nodes are called terminals.\\
+This means, that each player's tree has a root node and zero or more child nodes, where nodes with children are called functions and leaf nodes are called terminals.\\
 From the very beginning there is a fixed set of functions and terminals available.
 At first, a population of GP Players with random nodes are created which play a predetermined number of games.
-In each generation there is a chance for every player that it's tree is changed by mutation or crossover.
+In each generation there is a probability for every player to get it's tree changed by mutation or crossover.
 
 \subsection{Chromosome Tree}
 \subsubsection{Functions}
 Functions play the most important role in a GP Player's strategy, since functions are the decision-makers.\\
 They can have one or more child nodes and a specific return type. Further all nodes (except the root)  need to have a parent node.
-Child nodes can either be terminals or functions, where it is also very important that the child nodes return the very type the function expects.\\
+Child nodes can either be terminals or functions. It is vital that the child nodes return the very type the function expects.\\
 As an example we could define a lower-than function that expects floating point values from both children and returns a boolean value to it's parent node.
 
 \subsubsection{Terminals}
-Terminals are the leave nodes in a player's tree. They cannot have child nodes but return a certain type themselves.\\
+Terminals are the leaf nodes in a player's tree. They cannot have child nodes but return a certain type themselves.\\
 This does not necessarily mean that a terminal's value has to be static. They can have dynamic values like "pot size" or "higher hand card".
 
 \subsubsection{Root}
-The root node it a special function, since it does not have any parent nodes.\\
-For a proper evaluation of the player's tree it needs to be rooted, so we can start making further decisions at one point.
+The root node is a special function, since it does not have any parent nodes.\\
+For proper evaluation of the player's tree it needs to be rooted, so we can start making further decisions at one point.
 For GPoker we need to have a root node that always returns a poker move which is returned to the game.\\
 ~\\
 A GPlayer, for example, uses the root node "IfMove" which has three children:\\
@@ -164,7 +196,7 @@ So the the well-playing trees are not completely destroyed by the process of evo
 
 \subsubsection{Mutation}
 In contrast to crossover, mutation does not require two individual trees to operate.
-Either a single node is chosen at random and changed to some other random node that returns the same type,
+Either a single node is chosen at random and changed to some other random node with the same return type,
 or a randomly chosen subtree is modified.
 Mutation has to be used carefully, since random changes can render a very good player useless.
 
@@ -177,14 +209,14 @@ Mutation has to be used carefully, since random changes can render a very good p
 \subsection{Initial changes}
 As mentioned above, our focus in this work was to change existing nodes and/or add
 new nodes to the chromosome tree. When we first evaluated the existing code, especially the implemented functions and terminals, we observed that the raise value was randomly calculated [0.0 to 2.0 * pot]. The value was neither decided nor influenced by evolution. \\
-Raising plays a vital role in a Texas Hold'em No Limit poker game and this was also noticed by the evolution which often returned players who's trees were made up of a single raise node.
+Raising plays a vital role in a Texas Hold'em No Limit poker game and this was also noticed by the evolution which often returned players who's trees were but a single raise node.
 Therefore we decided to concentrate on making the raise node accessible to the evolution so its value can be evolved.
 \\ \\ 
 The first attempt was to allow the raise leaf-node to have a subtree which would potentially get evolved. For this purpose we introduced a new function node called "IfDouble". It evaluates a boolean expression and returns a double value which is the factor of the raise [i.e 1,9397 * pot size]. In this case, a ConstMove terminal could either be a terminal or a function node.
 
 \begin{center}
 	\includegraphics[width=0.86\textwidth]{raise_subtree_1.png}
-	\textit{\textbf{Figure 1: }Example tree of an evolved player with a IfDouble-subtree appended to raise}
+	\textit{\textbf{Figure 1: }Example tree of an evolved player with an IfDouble-subtree appended to raise}
 \end{center}
 
 This however led to undesirable mutations like the following:
@@ -253,7 +285,7 @@ For both experiments the parameter were chosen as follows:
 	\item Mutation-Rate:   0.0369
 \end{itemize} 
 
-A generation of 10.000 seems to be sufficient for an overall assessment of the fitness. It was noticed from previous test runs, with a generation size of 20.000, that the best players would emerge all within the threshold of 10.000 .
+A generation of 10.000 seems to be sufficient for an overall assessment of the fitness. It was noticed from previous test runs, with a generation size of 20.000, that the best players would emerge all within the threshold of 10.000.
 
 \subsection{Results}
 The following diagrams show the fitness of the old and new player of each run. \\
