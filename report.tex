@@ -143,13 +143,21 @@ Interactions can be summarized as follows :
 \newpage
 \section{Genetic Programming}
 \label{sec:genprog}
-As mentioned, a GP Player is represented by a so-called chromosome tree. Or more precisely, the poker player's strategy is represented by this tree.\\
+Genetic Programming tries to solve a complex problem by evolution.
+After defining the problem, an initial population is created which is going to be evolved.
+Further a fitness function is needed, that determines how fit an individual is for the problem.
+This can be for example the amount of won poker chips in a game.
+Individuals with a high fitness value are considered fitter and are candidates for evolution.
+The are then evolved by mutation or crossover.
+We will further use the example of a Genetic Programming poker player with a common tree representation.
+
+\subsection{Program Tree}
+A GP Player is represented by a program tree. More precisely, the poker player's strategy is represented by this tree.\\
 This means, that each player's tree has a root node and zero or more child nodes, where nodes with children are called functions and leaf nodes are called terminals.\\
 From the very beginning there is a fixed set of functions and terminals available.
 At first, a population of GP Players with random nodes are created which play a predetermined number of games.
-In each generation there is a probability for every player to get it's tree changed by mutation or crossover.
+In each generation there is a probability for every player to get its tree changed by mutation or crossover.
 
-\subsection{Chromosome Tree}
 \subsubsection{Functions}
 Functions play the most important role in a GP Player's strategy, since functions are the decision-makers.\\
 They can have one or more child nodes and a specific return type. Further all nodes (except the root)  need to have a parent node.
