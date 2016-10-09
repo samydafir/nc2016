@@ -143,13 +143,12 @@ Interactions can be summarized as follows :
 \newpage
 \section{Genetic Programming}
 \label{sec:genprog}
-Genetic Programming tries to solve a complex problem by evolution.
+Genetic Programming is an evolutionary method that tries to solve a complex problem by evolution.
 After defining the problem, an initial population is created which is going to be evolved.
 Further a fitness function is needed, that determines how fit an individual is for the problem.
 This can be for example the amount of won poker chips in a game.
-Individuals with a high fitness value are considered fitter and are candidates for evolution.
-The are then evolved by mutation or crossover.
-We will further use the example of a Genetic Programming poker player with a common tree representation.
+Individuals with a high fitness value are considered fitter and are candidates for evolution, which are then evolved by mutation or crossover.
+We will further use the example of a Genetic Programming poker player with a tree representation.
 
 \subsection{Program Tree}
 A GP Player is represented by a program tree. More precisely, the poker player's strategy is represented by this tree.\\
@@ -172,47 +171,50 @@ This does not necessarily mean that a terminal's value has to be static. They ca
 The root node is a special function, since it does not have any parent nodes.\\
 For proper evaluation of the player's tree it needs to be rooted, so we can start making further decisions at one point.
 For GPoker we need to have a root node that always returns a poker move which is returned to the game.\\
-~\\
-A GPlayer, for example, uses the root node "IfMove" which has three children:\\
-The very left child is the if-condition, that needs to return a boolean type.\\
-The middle child is the then-branch and returns a move.\\
-And at last, the right child represents the else-branch, which also returns a move.\\
 
 \newpage
 
 \subsubsection{Example}
+\begin{figure}[!ht]
 \begin{center}
 	\includegraphics[width=0.8\textwidth]{tree1.png}
+\caption{Example Tree of a GP poker player}
 \end{center}
+\end{figure}
 This very simple tree represents the following strategy:
 ~\\
 If 0.6 (Two to Ace normalized in 0 to 1) is less than or equal to the player's lower hand card, make a call.\\
 Else: check. Note that checking can also mean folding, in case there has been a raise.
 
 \subsection{Evolution}
-There are two fundamentally different ways for evolution to change a tree, namely crossover and mutation.
+There are two ways for evolution to change a tree, namely crossover and mutation.
 
 \subsubsection{Crossover}
-Crossover takes two individual players and swaps subtrees in a random point.
+Crossover takes two individual players and swaps random subtrees.
 Of course both subtrees need to have the same return type.
 This method is more common, since good players that were not sorted out by evolution usually have good subtrees.
 So the the well-playing trees are not completely destroyed by the process of evolution, but there is much room for new combinations.
 
+\begin{figure}
 \begin{center}
 	\includegraphics[width=1.0\textwidth]{tree_crossover.png}
+\caption{Example for crossover}
 \end{center}
+\end{figure}
 
 \subsubsection{Mutation}
 In contrast to crossover, mutation does not require two individual trees to operate.
 Either a single node is chosen at random and changed to some other random node with the same return type,
 or a randomly chosen subtree is modified.
-Mutation has to be used carefully, since random changes can render a very good player useless.
 
+\begin{figure}
 \begin{center}
 	\includegraphics[width=1.0\textwidth]{tree_mutation.png}
+\caption{Example for mutation}
 \end{center}
-
+\end{figure}
 \newpage
+
 \section{Implementation}
 \subsection{Initial changes}
 As mentioned above, our focus in this work was to change existing nodes and/or add
