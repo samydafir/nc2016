@@ -106,10 +106,7 @@ Additionally we will do some fine-tuning of evolutionary-parameters like populat
 
 \newpage
 
-\section{Frameworks}
-This project requires the use and interaction of two frameworks, namely GPoker and JEvolution. In the following, both frameworks and their interaction with one another will be briefly explained.
-
-\subsection{JEvolution}
+\section{JEvolution}
 JEvolution is the most essential part of this project. JEvolution provides functionality for Evolutionary Computation including Evolutionary Algorithms and Genetic Programming which is
 used in this project. JEvolution completely implements the evolution of syntax trees including selection, mutation and crossover. Syntax trees are made up from objects of type
 $ProgramNode$. Each node includes an array containing all child nodes. In order for evolution to work, a set of function- and terminal-nodes has to be provided. These
@@ -118,11 +115,22 @@ nodes are provided by the GPoker framework and by us. In order for JEvolution to
 our case this function has to somehow compute how good a syntax tree (here: representing a poker player) is able to complete the given task (in this case: play poker and win
 chips). Details about Genetic Programming are supplied in chapter \ref{sec:genprog}.
 
-\subsection{GPoker}
-GPoker is a poker-framework by Helmut A. Mayer. It provides a set of classes implementing a working poker setup including several game modes, different players and the
-possibility for a human player to play against computer players. The most essential functionality for our application is the possibility to include evolved players and hence
-use the framework to do genetic programming. GPoker provides nodes which are subclasses of the JEvolution $ProgramNode$ class representing decisions, actions and queries a
-poker player might perform. Parameters like game-mode, competing players, big/small blind and rounds to play can be specified in the gpoker.xml file.
+\section{GPoker}
+GPoker is a poker-framework by Edgar Ebensberger \cite{GPoker}. GPoker implements a working no-limit no-rebuy Texas Hold'em poker setup. The implementation was done in Java. This object oriented approach made a design possible where aspects and components of a real poker game are represented directly by the class structure. These components include amongst others a dealer, players, strategies, cards and decks. GPoker allows the parameterization of many aspect of poker including the game-mode, big and small blinds as well as the involved players. There are preimplemented players including a check- and random-player as well as a player following a specific pattern and a human-player.
+GPoker does not necessarily have to use genetic programming. Genetic programming and the evolution of a player is only invoked if a GPlayer is participating in a game.
+If this is the case GPoker envokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divides into terinals and functions. Functions  The following nodes are already implemented \cite{GPoker}:
+
+\begin{itemize}
+	\item ConstMove: represents one of 4 four poket moves: Raise, Call, Check, Fold. Results in another random
+	move if mutated.
+	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0.
+	\item VarDouble: contains a variable souble value ranging from 0.0 to 1.0. Originally only used to representate
+	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
+	hold hand values and the current game stage.
+	\item IfMove: checks a consition and executes the instructions in the left path if the consition is met otherwise the 
+	right path gets excuted. Retrns a Move.
+	\item ConstBool: contains a constant boolean value ("true" or "false")
+\end{itemize}
 
 \subsection{Interaction}
 How does the interaction of these two frameworks enable us to evolve a poker player?  \\
@@ -349,6 +357,6 @@ shall be. So from a theoretical point of view it is pretty clear that these alte
 
 \nocite{*}
 \bibliographystyle{ieeetr}
-\bibliography{report_refs.bib}		% .bib files here
+\bibliography{report_refs}		% .bib files here
 
 \end{document}
