@@ -105,50 +105,6 @@ Additionally we will do some fine-tuning of evolutionary-parameters like populat
 %\input{gp.tex}
 
 \newpage
-
-\section{JEvolution}
-JEvolution is the most essential part of this project. JEvolution provides functionality for Evolutionary Computation including Evolutionary Algorithms and Genetic Programming which is
-used in this project. JEvolution completely implements the evolution of syntax trees including selection, mutation and crossover. Syntax trees are made up from objects of type
-$ProgramNode$. Each node includes an array containing all child nodes. In order for evolution to work, a set of function- and terminal-nodes has to be provided. These
-are implemented as subclasses of the $ProgramNode$ class. Selection is conducted based on the computed fitness of every syntax tree. For our application of the framework,
-nodes are provided by the GPoker framework and by us. In order for JEvolution to conduct evolution correctly, a function calculating a tree's fitness has to be supplied (fitness function). In
-our case this function has to somehow compute how good a syntax tree (here: representing a poker player) is able to complete the given task (in this case: play poker and win
-chips). Details about Genetic Programming are supplied in chapter \ref{sec:genprog}.
-
-\section{GPoker}
-GPoker is a poker-framework by Edgar Ebensberger \cite{GPoker}. GPoker implements a working no-limit no-rebuy Texas Hold'em poker setup. The implementation was done in Java. This object oriented approach made a design possible where aspects and components of a real poker game are represented directly by the class structure. These components include amongst others a dealer, players, strategies, cards and decks. GPoker allows the parameterization of many aspect of poker including the game-mode, big and small blinds as well as the involved players. There are preimplemented players including a check- and random-player as well as a player following a specific pattern and a human-player.
-GPoker does not necessarily have to use genetic programming. Genetic programming and the evolution of a player is only invoked if a GPlayer is participating in a game.
-If this is the case GPoker envokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divides into terinals and functions. Functions  The following nodes are already implemented \cite{GPoker}:
-
-\begin{itemize}
-	\item ConstMove: represents one of 4 four poket moves: Raise, Call, Check, Fold. Results in another random
-	move if mutated.
-	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0.
-	\item VarDouble: contains a variable souble value ranging from 0.0 to 1.0. Originally only used to representate
-	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
-	hold hand values and the current game stage.
-	\item IfMove: checks a consition and executes the instructions in the left path if the consition is met otherwise the 
-	right path gets excuted. Retrns a Move.
-	\item ConstBool: contains a constant boolean value ("true" or "false")
-\end{itemize}
-
-\subsection{Interaction}
-How does the interaction of these two frameworks enable us to evolve a poker player?  \\
-JEvolution evolves syntax trees made up from $ProgramNode$ objects. It does not care about what the functionality of a node is. As long
-as it is specified as a subclass of $ProgramNode$ it can be used in a syntax tree.
-Once GPoker detects that a GPlayer (evolved player) is specified in the gpoker.xml file, it communicates with JEvolution to invoke the evolutionary process.  GPoker provides nodes 
-for constructing syntax trees. JEvolution then builds and evolves these trees made up from the supplied nodes. A vital component of the evolutionary process is the calculation of the fitness value. In the case
-of the evolution of a poker player the fitness value should of course reflect the player's skill. The most intuitive way of defining a player's skill is measuring the amount of won/lost chips.
-This value can be determined by letting the player play games of poker against other players and is then recorded as the player's fitness. JEvolution can then execute the selection part
-of the evolutionary process using this fitness value provided by GPoker.
-\\
-Interactions can be summarized as follows :
-\begin{itemize}
-	\item GPoker detects an evolved player in the xml file and invokes JEvolution, providing poker specific nodes.
-	\item JEvolution builds syntax trees and uses GPoker to calculate fitness values of individual syntax trees.
-\end{itemize}
-
-\newpage
 \section{Genetic Programming}
 \label{sec:genprog}
 Genetic Programming is an evolutionary method that tries to solve a complex problem by evolution.
@@ -222,6 +178,52 @@ or a randomly chosen subtree is modified.
 \end{center}
 \end{figure}
 \newpage
+
+
+\section{JEvolution}
+JEvolution is a framework implementing several methods of evolutionary computing including Genetic Programming. JEvolution
+conducts Genetic Programming as described in chapter \ref{sec:genprog}. It takes a node set and creates syntax trees. These
+syntax trees are then evolved using selection, mutation and crossover. JEvolution selects trees with the highest fitness value. The fitness value has to correspond to the ability of a player to "survive" in the surrounding environment. In this application surviving means winning more chips and hence winning more games. Fitness calculation of a GPlayer is done by GPoker. 
+
+\section{GPoker}
+GPoker is a poker-framework by Edgar Ebensberger \cite{GPoker}. GPoker implements a working no-limit no-rebuy Texas Hold'em poker setup. The implementation was done in Java. This object oriented approach made a design possible where aspects and components of a real poker game are represented directly by the class structure. These components include amongst others a dealer, players, strategies, cards and decks. GPoker allows the parameterization of many aspect of poker including the game-mode, big and small blinds as well as the involved players using a configuration file. There are preimplemented players including a check- and random-player as well as a player following a specific pattern and a human-player.
+GPoker does not necessarily have to use genetic programming. Genetic programming and the evolution of a player is only invoked if a GPlayer is participating in a game.
+If this is the case GPoker envokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divides into terinals and functions. Functions  The following nodes are already implemented \cite{GPoker}:
+
+\begin{itemize}
+	\item ConstMove: represents one of 4 four poket moves: Raise, Call, Check, Fold. Results in another random
+	move if mutated
+	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0
+	\item VarDouble: contains a variable souble value ranging from 0.0 to 1.0. Originally only used to representate
+	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
+	hold hand values and the current game stage
+	\item IfMove: checks a consition and executes the instructions in the left path if the consition is met otherwise the 
+	right path gets excuted. Retrns a Move one of the four poker moves
+	\item ConstBool: contains a constant boolean value ("true" or "false")
+\end{itemize}
+
+\subsection{Interaction}
+Interactions between the two mentioned frameworks (namely JEvolution and GPoker) are essential to achieve the evolution of a poker player through Genetic Programming. Evolution works as follows:
+\begin{enumerate}
+	\item 
+\end{enumerate}
+
+
+How does the interaction of these two frameworks enable us to evolve a poker player?  \\
+JEvolution evolves syntax trees made up from $ProgramNode$ objects. It does not care about what the functionality of a node is. As long
+as it is specified as a subclass of $ProgramNode$ it can be used in a syntax tree.
+Once GPoker detects that a GPlayer (evolved player) is specified in the gpoker.xml file, it communicates with JEvolution to invoke the evolutionary process.  GPoker provides nodes 
+for constructing syntax trees. JEvolution then builds and evolves these trees made up from the supplied nodes. A vital component of the evolutionary process is the calculation of the fitness value. In the case
+of the evolution of a poker player the fitness value should of course reflect the player's skill. The most intuitive way of defining a player's skill is measuring the amount of won/lost chips.
+This value can be determined by letting the player play games of poker against other players and is then recorded as the player's fitness. JEvolution can then execute the selection part
+of the evolutionary process using this fitness value provided by GPoker.
+\\
+Interactions can be summarized as follows :
+\begin{itemize}
+	\item GPoker detects an evolved player in the xml file and invokes JEvolution, providing poker specific nodes.
+	\item JEvolution builds syntax trees and uses GPoker to calculate fitness values of individual syntax trees.
+\end{itemize}
+
 
 \section{Implementation}
 \subsection{Initial changes}
