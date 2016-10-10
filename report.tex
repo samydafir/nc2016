@@ -13,6 +13,7 @@
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
 \usepackage{listings}
+\usepackage{comment}
 
 \textheight 680pt
 \textwidth 460pt
@@ -88,6 +89,11 @@ Correspondence to: \\
 \setcounter{page}{1}
 
 \abstract{
+This project is based on the evolution of a computer poker player by means of genetic programming. The initial population evolves through selection, mutation and crossover of their strategies represented as syntax trees. Evolution selects the best players of every generation based on their fitness value which corresponds to their won chips and hence the quality of their strategies. In the end the best player emerges.
+The focus of this project lies on making more information available to each computer player in order to let them make better poker moves and ultimately lead to improved evolved players emerging from the evolutionary process. This is done through determining which information is relevant and making it available to be used in a players strategy. An important objective is not to improve strategies ourselves but rather provide information to computer players and let evolution run its course to to complete this task.
+Furthermore fine tuning of evolutionary parameters like mutation rate, population size and number of generations was done to achieve the best possible result.
+
+\begin{comment}
 The goal of this project is to evolve a GP poker player by means of genetic programming techniques.
 The GP Players evolve over generations through selection, mutation and cross mutation of their chromosome tree. \\
 A good computer player has to emerge after a sufficient amount of generations have played in a "heads up" texas-hold-em no limit poker game.
@@ -98,6 +104,7 @@ Further focus lies on the poker game itself.
 We have to determine what kind of and how much information a player needs in order to evolve properly without interfering with its evolution.
 This means, that we don't want to "tell" the player what the next best action is, but rather let evolution decide.
 Additionally we will do some fine-tuning of evolutionary-parameters like population size or number of generations to achieve the best possible result.
+\end{comment}
 }
 
 \newpage
