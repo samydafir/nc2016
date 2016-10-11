@@ -128,6 +128,7 @@ From the very beginning there is a fixed set of functions and terminals availabl
 At first, a population of GP Players with random nodes are created which play a predetermined number of games.
 In each generation there is a probability for every player to get its tree changed by mutation or crossover.
 
+\label{sssec:functions}
 \subsubsection{Functions}
 Functions play the most important role in a GP Player's strategy, since functions are the decision-makers.\\
 They can have one or more child nodes and a specific return type. Further all nodes (except the root)  need to have a parent node.
@@ -192,6 +193,7 @@ JEvolution is a framework implementing several methods of evolutionary computing
 conducts Genetic Programming as described in section \ref{sec:genprog}. It takes a node set and creates syntax trees. These
 syntax trees are then evolved using selection, mutation and crossover. JEvolution selects trees with the highest fitness value. The fitness value has to correspond to the ability of a player to "survive" in the surrounding environment. In this application surviving means winning more chips and hence winning more games. Fitness calculation of a GPlayer is done by GPoker. 
 
+\label{gpocker}
 \subsection{GPoker}
 GPoker is a poker-framework by Edgar Ebensberger \cite{GPoker}. GPoker implements a working no-limit no-rebuy Texas Hold'em poker setup. The implementation was done in Java. This object oriented approach made a design possible where aspects and components of a real poker game are represented directly by the class structure. These components include amongst others a dealer, players, strategies, cards and decks. GPoker allows the parameterization of many aspect of poker including the game-mode, big and small blinds as well as the involved players using a configuration file. There are preimplemented players including a check- and random-player as well as a player following a specific pattern and a human-player.
 GPoker does not necessarily have to use genetic programming. Genetic programming and the evolution of a player is only invoked if a GPlayer is participating in a game.
@@ -204,13 +206,14 @@ If this is the case GPoker envokes JEvolution which then evolves the player usin
 	\item VarDouble: contains a variable souble value ranging from 0.0 to 1.0. Originally only used to representate
 	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
 	hold hand values and the current game stage
-	\item IfMove: checks a consition and executes the instructions in the left path if the consition is met otherwise the 
+	\item IfMove: checks a condition and executes the instructions in the left path if the condition is met otherwise the 
 	right path gets excuted. Retrns a Move one of the four poker moves
-	\item ConstBool: contains a constant boolean value ("true" or "false")
+	\item ConstBoolean: contains a constant boolean value ("true" or "false")
 \end{itemize}
 
 \subsection{Interaction}
 Interactions between the two mentioned frameworks (namely JEvolution and GPoker) are essential to achieve the evolution of a poker player through Genetic Programming. Evolution works as follows:
+\label{sec:nodes}
 \begin{enumerate}
 	\item A game of poker is startet through GPoker which checks if a GPlayer is amongst the players.
 	\item If this is the case JEvolution is invoked to create an initial population of players represented by syntax trees
@@ -222,89 +225,88 @@ Interactions between the two mentioned frameworks (namely JEvolution and GPoker)
 	\item This is repeated until the defined amount of generations has been reached and ultimately the best player is selected.
 \end{enumerate}
 
-\section{Implementation}
-\subsection{Initial changes}
-As mentioned above, our focus in this work was to change existing nodes and/or add
-new nodes to the chromosome tree. When we first evaluated the existing code, especially the implemented functions and terminals, we observed that the raise value was randomly calculated [0.0 to 2.0 * pot]. The value was neither decided nor influenced by evolution. \\
-Raising plays a vital role in a Texas Hold'em No Limit poker game and this was also noticed by the evolution which often returned players who's trees were but a single raise node.
-Therefore we decided to concentrate on making the raise node accessible to the evolution so its value can be evolved.
-\\ \\ 
-The first attempt was to allow the raise leaf-node to have a subtree which would potentially get evolved. For this purpose we introduced a new function node called "IfDouble". It evaluates a boolean expression and returns a double value which is the factor of the raise [i.e 1,9397 * pot size]. In this case, a ConstMove terminal could either be a terminal or a function node.
-
-\begin{center}
-	\includegraphics[width=0.86\textwidth]{raise_subtree_1.png}
-	\textit{\textbf{Figure 1: }Example tree of an evolved player with an IfDouble-subtree appended to raise}
-\end{center}
-
-This however led to undesirable mutations like the following:
-\begin{itemize}
-	\item GPoker produced IfDouble-Nodes that only have one child
-	(ConstBoolean).
-	\item GPoker produced ConstMove(RAISE) Nodes that have a
-	ConstDouble child which does not get evaluated.
-\end{itemize}
-
 \newpage
-\subsection{Final implementation}
-\subsubsection{Raise}
-As a final solution, the raise move was moved out of ConstMove and implemented as an independent function node. It still has only one child but now the lines between functions and terminals are no longer blurred. With this change, the evolution can now remove raise entirely if it finds that it is not a good function. Additionally, it is now easier to mutate the factor of a raise which is more dynamic and granular. \\
-This is due to a raise subtree now being able to grow or shrink and build up different calculations for the raise factor like multiplying the high card with another factor. Also any node returning double can be attached to the new raise node.
+\section{Experiment Setup}
+For this experiment, some nodes got altered and one new node got introduced to test wether this results in a improved (higher) fitness of the evolved poker players. Two players, each with a different setup of nodes, evolved against the "PatternPlayer" and the "TestPlayer" in multiple runs.
 
-\subsubsection{Fold}
-After some testing we noticed that sometimes a player would emerge that always folded. A fold-only player does not make any sense since it would gradually lead to the loss of all the player's chips. Although this is a crucial mechanism and a valid move, we deleted fold from the ConstMove class to avoid these kinds of players. ConstMove is now limited to returning a "Call" or "Check". \\
-This is possible because the \textit{checkMove(Player player, Move move)} method of the "Dealer" class handles invalid player moves and automatically folds [i.e. when a player checks in response to a raise].
+\subsection{Alterations}
+The following additions and alterations had been done to the fixed set of nodes explained in section \ref{sec:nodes}.\\\\
+\underline{New:}\\
+\textbf{IfDouble}: A function node (see \ref{sssec:functions}) that checks if a double value is present and executes the left path, otherwise the right path gets executed.\\\\
+\underline{Changed:}\\
+\textbf{RaiseMove}: A terminal node for raise which was previousely implemented in "ConstMove" (see \ref{gpocker}).\\
+\textbf{NewConstMove}: The same terminal as "ConstMove" (see \ref{gpocker}) except that it now doesn't contain the raise anymore since raise is now a terminal on it's own.\\
 
+The nodes in figure
+
+\subsection{Node setup}
+These are the node-setups for both players.\\
+The player with Setup1 has the aforementioned new and altered nodes in his pool for evolution.\\
+The player with Setup2 has the the original function- and terminal-set without any additional alterations.\\
+
+\begin{figure}[!ht]
+	\begin{center}
+	\includegraphics[width=.3\textwidth]{new_node_table.png}
+	\caption{All functions and terminals used in the experiment devided in setups per player}
+	\end{center}
+\end{figure}	
+
+The nodes:
+\begin{itemize}
+	\item LessEqualBoolean
+	\item ConstDouble
+	\item VarDouble
+	\item ConstBoolean
+	\item MultDouble 
+\end{itemize}
+are of no particular interest in this experiment. They were choosen because we want to test if wider range of nodes is beneficial for the evolution. 
+
+\begin{figure}[!ht]
 \begin{center}
 	\includegraphics[width=0.95\textwidth]{NewRaise.png}
-	\textit{\textbf{Figure 2: }Example tree of an evolved player after the final implementation}
+	\caption{Example tree of an evolved player with setup 1}
 \end{center}
+\end{figure}
+
+\label{ssec:patternplayer}
+\subsection{Evolution against PatternPlayer}
+The pattern player was choosen to evolve against, because it exhibits a play style that a new player to Texas Hold'em would have. Meaning that it plays defensively when his hand is not that great. It evaluates its hand (including community cards) and the hole cards. A normalized value is then calculated which in turn determines its next move.
 
 \newpage
-\section{Experiments}
-For the experiments we evolved two GPlayers both against a "PatternPlayer" and a "TestPlayer" in multiple runs. The first player had the original function- and terminal-set without any additional alterations available. The second player had the aforementioned changes applied. After all test runs were completed, the fitness of the old and new player were compared.
 
-\subsection{Setup}
-Nodes used:
-\begin{flushleft}
-	\includegraphics[width=.3\textwidth]{node_table.png}
-\end{flushleft}	
+\label{sec:testplayer}
+\subsection{Evolution against TestPlayer}
+One test player was choosen from previously evolved players which plays as follows.\\
 
-\subsubsection{Evolution against PatternPlayer}
-The PatternPlayer plays by evaluating his hand value and the overall values of the cards [dividing their rank by an ace and adding them].
-The move made depends on their normalized value.
+\underline{Pseudocode:}\\
 
-\subsubsection{Evolution against TestPlayer}
-One TestPlayer was choosen from previously evolved players that made sane moves and played as follows.
-\\
-\begin{lstlisting}
-	if (getCards().get(1).getRank() < Card.JACK) {
-	  if (dealer.getCallBet(this) < 9)
-		move.setType(Move.CALL);
-	  else
-		move.setType(Move.CHECK);
-	}else
-	  move.setBet((int)(0.9849 * dealer.getPot()));
-		
-	return move;
-\end{lstlisting}
+\textbf{if} highest card \textless \hspace*{0.5em}JACK \\
+\hspace*{3em}\textbf{if} current bet for a call \textless \hspace*{0.5em}9 \\
+\hspace*{3.9em} \textbf{return} CALL \\
+\hspace*{2.5em} \textbf{else} \\
+\hspace*{3.9em} \textbf{return} CHECK \\
+\hspace*{1.5em} \textbf{else}  \\
+\hspace*{3em} \textbf{return} RAISE(0.9849 * pot size) \\
 
-In short, this player was playing more defensively and only performed a "Call" or "Check" when his highest card was lower than a JACK. If his highest card was better he played more aggressively and raised with a value of 0.9849 * pot-size.
-
-\newpage
-\subsubsection{Experiment parameter}
+\subsection{Input parameter}
 For both experiments the parameters were chosen as follows: 
 \begin{itemize}
-	\item Game Mode:       Doyle
-	\item Test-Runs:       8 for each player
-	\item Generations:     10.000
+	\item Game Mode: Doyle
+	\item Test-Runs: 8 for each player
+	\item Generations: 10.000
 	\item Population-Size: 100
-	\item Rounds:          1000
-	\item Mutation-Rate:   0.0369
+	\item Rounds played per Generation: 1000
+	\item Mutation-Rate: 0.0369
+	\item Crossover-Rate: 1.0
+	\item Selection Method: 
+	\item Chips/Player: 1000
+	\item Big blind: 10
 \end{itemize} 
 
-A generation of 10.000 seemed to be sufficient for an overall assessment of the fitness. In previous previous test runs using 20.000 generation it was noticed that no best player would emerge after the 10.000th generation.
+A generation of 10.000 seemed to be sufficient for an overall assessment of the fitness. In test runs using 20.000 generation it was noticed that
+the player with the highest fitness would always emerge within the 10.000th generation.
 
-\subsection{Results}
+\subsection{Experiment Results}
 The following diagrams show the fitness of the old and new player for each run. \\
 The fitness is plotted on the y-axis whereas the x-axis displays the number of the run in which the result was recorded. Due to the order the values were recorded in not being in any way relevant the values have been sorted in an ascending order to have a better basis for interpretation. In short, the diagram does not show a function. This needs to be kept in mind when assessing the diagrams.
 \subsubsection{Evolution against PatternPlayer}
