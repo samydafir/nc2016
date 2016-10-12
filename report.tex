@@ -128,8 +128,9 @@ From the very beginning there is a fixed set of functions and terminals availabl
 At first, a population of GP Players with random nodes are created which play a predetermined number of games.
 In each generation there is a probability for every player to get its tree changed by mutation or crossover.
 
-\label{sssec:functions}
+
 \subsubsection{Functions}
+\label{sssec:functions}
 Functions play the most important role in a GP Player's strategy, since functions are the decision-makers.\\
 They can have one or more child nodes and a specific return type. Further all nodes (except the root)  need to have a parent node.
 Child nodes can either be terminals or functions. It is vital that the child nodes return the very type the function expects.\\
@@ -159,6 +160,7 @@ If 0.6 (Two to Ace normalized in 0 to 1) is less than or equal to the player's l
 Else: check. Note that checking can also mean folding, in case there has been a raise.
 
 \subsection{Evolution}
+\label{evolution}
 There are two ways for evolution to change a tree, namely crossover and mutation.
 
 \subsubsection{Crossover}
@@ -268,14 +270,14 @@ are of no particular interest in this experiment. They were choosen because we w
 \end{center}
 \end{figure}
 
-\label{ssec:patternplayer}
 \subsection{Evolution against PatternPlayer}
+\label{ssec:patternplayer}
 The pattern player was choosen to evolve against, because it exhibits a play style that a new player to Texas Hold'em would have. Meaning that it plays defensively when his hand is not that great. It evaluates its hand (including community cards) and the hole cards. A normalized value is then calculated which in turn determines its next move.
 
 \newpage
 
-\label{sec:testplayer}
 \subsection{Evolution against TestPlayer}
+\label{ssec:testplayer}
 One test player was choosen from previously evolved players which plays as follows.\\
 
 \underline{Pseudocode:}\\
@@ -288,34 +290,52 @@ One test player was choosen from previously evolved players which plays as follo
 \hspace*{1.5em} \textbf{else}  \\
 \hspace*{3em} \textbf{return} RAISE(0.9849 * pot size) \\
 
+\subsection{Fitness and fitness evaluation}
+\label{fitness}
+The fitness of a player is usually calculated via a fitness function which determines its performance or quality in the given environment. In the context of this project, the fitness is represented by the amount of chips a player had won.
+
+\subsection{Selection and selection method}
+\label{selection}
+Some of the players of a given generation, are being selected in order to produce new player for the next generation. The selection method we chose is called "Tournament Selection" where the players with the highest fitness value of a parent population are picked in order to produce a new generation of players. The reason behind the concept of choosing the ones with the highest fitness is that they are more likely to produce new players that are "good" players (the ones achieving high fitness scores). 
+
+\subsection{Doyle's Game}
+\label{doyle}
+Doyle's Game is a variant of no-limit Texas Hold'em and is being used in this experiment. In this variant of the game, each player can make an "all-in" bet, but the players stack size (the amount of chips a player has before making any bet, blinds included) are reset to some default size/amount after each hand. The won or lost chips of every player is stored separately for each one and does not affect the starting chips of the following games.\\\\
+This approach prevents two problems:
+\begin{itemize}
+	\item a player going bankrupt during a game. Avoiding this is desirable since we want to evaluate each player against each opponent.
+	\item a player having far more chips than his opponents since this can lead to all-in bets of unequal sizes between players.
+\end{itemize}
+
+\newpage
 \subsection{Input parameter}
+\label{inputparameter}
 For both experiments the parameters were chosen as follows: 
 \begin{itemize}
-	\item Game Mode: Doyle
+	\item Game Mode: Doyle (see \ref{doyle})
 	\item Test-Runs: 8 for each player
 	\item Generations: 10.000
 	\item Population-Size: 100
-	\item Rounds played per Generation: 1000
-	\item Mutation-Rate: 0.0369
-	\item Crossover-Rate: 1.0
-	\item Selection Method: 
-	\item Chips/Player: 1000
+	\item Rounds played per generation: 1000
+	\item Mutation-Rate: 0.0369 (see \ref{evolution})
+	\item Crossover-Rate: 1.0 (see \ref{evolution})
+	\item Selection Method: Tournament selection (see \ref{selection})
+	\item Chips/Player: 1000 
 	\item Big blind: 10
 \end{itemize} 
-
 A generation of 10.000 seemed to be sufficient for an overall assessment of the fitness. In test runs using 20.000 generation it was noticed that
 the player with the highest fitness would always emerge within the 10.000th generation.
 
-\subsection{Experiment Results}
-The following diagrams show the fitness of the old and new player for each run. \\
-The fitness is plotted on the y-axis whereas the x-axis displays the number of the run in which the result was recorded. Due to the order the values were recorded in not being in any way relevant the values have been sorted in an ascending order to have a better basis for interpretation. In short, the diagram does not show a function. This needs to be kept in mind when assessing the diagrams.
+\section{Experiment Results}
+These are the results after doing 8 test-runs per setup ........
+
 \subsubsection{Evolution against PatternPlayer}
 During evolution against the PatternPlayer it was noted that the changes led to a deterioration of the GPlayer's fitness.\\
 \\
-Average calculated fitness of the new GPlayer: 102001\\
-Average calculated fitness of the old GPlayer: 113168
+Average calculated fitness of the \textbf{setup 1}: 102001\\
+Average calculated fitness of the \textbf{setup 2}: 113168
 \begin{center}
-	\includegraphics[width=.9\textwidth]{gp_vs_pp_1.png}
+	\includegraphics[width=.9\textwidth]{gp_vs_pp_new.png}
 \end{center}
 
 \subsubsection{Evolved trees against the PatternPlayer}
@@ -328,11 +348,11 @@ Average calculated fitness of the old GPlayer: 113168
 \subsubsection{Evolution against TestPlayer}
 Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. It was also notable that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer. This is most likely due to the TestPlayer unlike the PatternPlayer making objectively decent moves which results in the GPlayer having a more difficult opponent and hence winning less chips.\\
 \\
-Average calculated fitness of the new GPlayer: 31153\\
-Average calculated fitness of the old GPlayer: 26710
+Average calculated fitness of the player with \textbf{setup 1}: 31153\\
+Average calculated fitness of the player with \textbf{setup 2}: 26710
 
 \begin{center}
-	\includegraphics[width=.9\textwidth]{gp_vs_tp_1.png}
+	\includegraphics[width=.9\textwidth]{gp_vs_tp_new.png}
 \end{center}
 
 \subsubsection{Evolved trees against the TestPlayer}
