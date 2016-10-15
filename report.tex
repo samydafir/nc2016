@@ -89,22 +89,9 @@ Correspondence to: \\
 \setcounter{page}{1}
 
 \abstract{
-This project is based on the evolution of a computer poker player by means of genetic programming. The initial population evolves through selection, mutation and crossover of their strategies represented as syntax trees. Evolution selects the best players of every generation based on their fitness value which corresponds to their won chips and hence the quality of their strategies. In the end the best player emerges.
-The focus of this project lies on making more information available to each computer player in order to let them make better poker moves and ultimately lead to improved evolved players emerging from the evolutionary process. This is done through determining which information is relevant and making it available to be used in a players strategy. An important objective is not to improve strategies ourselves but rather provide information to computer players and let evolution run its course to to complete this task.
-Furthermore fine tuning of evolutionary parameters like mutation rate, population size and number of generations was done to achieve the best possible result.
-
-\begin{comment}
-The goal of this project is to evolve a GP poker player by means of genetic programming techniques.
-The GP Players evolve over generations through selection, mutation and cross mutation of their chromosome tree. \\
-A good computer player has to emerge after a sufficient amount of generations have played in a "heads up" texas-hold-em no limit poker game.
-Good players are determined by their fitness value which is determined through assessing a player's success after each poker round. \\
-The focus of our work lies on the chromosome tree.
-Although the current API provides some basics functions for that tree, it is likely that they are not sufficient for the evolution of a good player.
-Further focus lies on the poker game itself.
-We have to determine what kind of and how much information a player needs in order to evolve properly without interfering with its evolution.
-This means, that we don't want to "tell" the player what the next best action is, but rather let evolution decide.
-Additionally we will do some fine-tuning of evolutionary-parameters like population size or number of generations to achieve the best possible result.
-\end{comment}
+This project works on the evolution of a computer poker player by means of Genetic Programming. The initial population evolves through selection, mutation and crossover of their strategies represented as syntax trees. Evolution selects the best players of every generation based on their fitness value which corresponds to their won chips and hence the quality of their strategies. In the end the fittest player emerges.
+The focus of this project lies on making more information available to each computer player in order to let them make better poker moves which ultimately leads to improved evolved players emerging from the evolutionary process. This is done through determining which information is relevant and making it available to be used in a players strategy. An important objective is not to improve strategies ourselves but rather provide information to computer players and let evolution run its course to complete this task.
+Furthermore, fine tuning of evolutionary parameters like mutation rate, population size and number of generations is conducted to achieve the best possible result.
 }
 
 \newpage
@@ -157,16 +144,6 @@ This is a community card gametype. For this game two face-down cards are dealt t
 Then five community cards are dealt in three stages. The first betting stage is the "Flop". The Flop consists of three cards. The next stage is the "Turn", now one more community card is dealt. The last stage is the "River", where the final community card is dealt. Now each player has to seek out the best five card combinations by using his two hand cards and three community cards. Like in all other Poker games, the players have the options to check, call, raise or fold in each betting round.
 
 \newpage
-
-
-
-
-
-
-
-
-
-
 
 
 \section{Genetic Programming}
@@ -250,25 +227,26 @@ or a randomly chosen subtree is modified.
 \subsection{JEvolution}
 JEvolution is a framework implementing several methods of evolutionary computing including Genetic Programming. JEvolution
 conducts Genetic Programming as described in section \ref{sec:genprog}. It takes a node set and creates syntax trees. These
-syntax trees are then evolved using selection, mutation and crossover. JEvolution selects trees with the highest fitness value. The fitness value has to correspond to the ability of a player to "survive" in the surrounding environment. In this application surviving means winning more chips and hence winning more games. Fitness calculation of a GPlayer is done by GPoker. 
+syntax trees are then evolved using selection, mutation and crossover. JEvolution selects trees with the highest fitness value which has to correspond to the ability of a player to "survive" in the surrounding environment.
+In this application surviving means winning more chips and hence emerging as a winner in more games. Fitness calculation of a GPlayer is done by GPoker. 
 
 \label{gpocker}
 \subsection{GPoker}
 GPoker is a poker-framework by Edgar Ebensberger \cite{GPoker}. GPoker implements a working no-limit no-rebuy Texas Hold'em poker setup. The implementation was done in Java. This object oriented approach made a design possible where aspects and components of a real poker game are represented directly by the class structure. These components include amongst others a dealer, players, strategies, cards and decks. GPoker allows the parameterization of many aspect of poker including the game-mode, big and small blinds as well as the involved players using a configuration file. There are preimplemented players including a check- and random-player as well as a player following a specific pattern and a human-player.
-GPoker does not necessarily have to use genetic programming. Genetic programming and the evolution of a player is only invoked if a GPlayer is participating in a game.
-If this is the case GPoker envokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divides into terinals and functions. The following nodes are already implemented \cite{GPoker}:
+GPoker does not necessarily have to use Genetic Programming which is only invoked if an evolved player is participating in a game.
+If this is the case GPoker invokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divides into terinals and functions. The following nodes were already implemented \cite{GPoker}:
 
 \begin{itemize}
 	\item ConstMove: represents one of 4 four poker moves: Raise, Call, Check, Fold. Results in another random
-	move if mutated
-	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0
-	\item VarDouble: contains a variable souble value ranging from 0.0 to 1.0. Originally only used to representate
+	move if mutated.
+	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0.
+	\item VarDouble: contains a variable double value ranging from 0.0 to 1.0. Originally only used to representate
 	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
-	hold hand values and the current game stage
+	hold hand values and the current game stage.
 	\item IfMove: checks a condition and executes the instructions in the left path if the condition is met otherwise the 
-	right path gets excuted. Retrns a Move one of the four poker moves
-	\item ConstBoolean: contains a constant boolean value ("true" or "false")
-	\item LessEqualBoolean: a function node which compares two double values of its child nodes and returns true in case the left value is less or equal to the right value. Otherwise it returns false. 
+	right path gets excuted. Returns a one of the four poker moves.
+	\item ConstBoolean: contains a constant boolean value ("true" or "false").
+	\item LessEqualBoolean: a function node which compares the two double values of its child nodes and returns true in case of the left value being less or equal compared to the right value. Otherwise false is reutrned.
 	\item MultDouble: a function node which returns the product of its child nodes (a double value).
 \end{itemize}
 
@@ -281,7 +259,7 @@ Interactions between the two mentioned frameworks (namely JEvolution and GPoker)
 	made up from the nodes defined in GPoker.
 	\item The fitness of each player (syntax tree) is determined by letting them play games of poker. The fitness value is defined as the total amount of chips a player has won.
 	\item Selection is conducted on the population by selecting the players with the highest fitness values which are ultimately those who won the most chips and played best.
-	\item The population size is then increased through mutation and crossover (more information in section \ref{sec:genprog}).
+	\item The new generation is then repopulated through mutation and crossover (more information in section \ref{sec:genprog}).
 	\item Then the whole circle is repeated using this new generation.
 	\item This is repeated until the defined amount of generations has been reached and ultimately the best player is selected.
 \end{enumerate}
@@ -385,6 +363,7 @@ The figure below shows how a player might look like using the altered node setup
 		\end{figure}
 
 \section{Experiment Results}
+\label{sec:expres}
 Each setup evolved against the "PatternPlayer" and the "TestPlayer"  
 Please note that the values in the following diagrams are not plotted in the same order as they have been obtained from the test runs but are sorted in an ascending order!\\
 Furthermore, 
@@ -407,9 +386,8 @@ Overall it is safe to say that the changes improved the performance against the 
 \end{center}
 
 \section{Summary}
-Theoretically speaking our alterations provide the player with more information about the current state of the game. This enables the evolution of factors on which the player decides on how high the raise value
-shall be. So from a theoretical point of view it is pretty clear that these alterations will lead to the evolution yielding better players. Analyzing our results this assumption can only be confirmed partly. As has been shown the improvement/deterioration is highly dependent on the player against which the GPlayer plays during evolution. This is most likely due to the computer players using different strategies of which one can be easily exploited by the GPlayer using the new function-set whereas the other seems to be more robust. Finally we conclude that although there have been some negative results while playing against the PatternPlayer the result is quite positive. The players emerging after the alterations were made seem to make good decisions and queries (from a poker point of view). Additionally our changes have led to a fairly significant improvement when playing against a player who makes decisions and moves a decent human poker player might make (TestPlayer).
-
+The main objective of this project was to extend the already existing process of evolving a poker player through Genetic Programming. The focus lay on increasing the information available to the computer player by implementing new nodes to be used in the syntax tree defining a player's strategy. The main feature enabled by the newly implemented nodes is the added ability to evolve the value of a poker raise move (RaiseMove). Furthermore, there is a new node making it possible for the evolved player to work with different values (card values, stage value) depending on the current circumstances (IFDouble).
+As the experiments in chapter \ref{sec:expres} have shown an overall increase in an evolved player's success can only be partly confirmed and is highly dependent on the opponent. Experiments where the computer player was evolved against a opponent following a certain fixed pattern showed no improvement. The second round of experiments was conducted against a sane player with a strategy a human might use. These results showed an increase in the evolved player's overall fitness of up to 30 percent compared to the original project state which is indeed a fairly significant improvement.
 
 % links go here, NOT in references
 
