@@ -112,6 +112,63 @@ Additionally we will do some fine-tuning of evolutionary-parameters like populat
 %\input{gp.tex}
 
 \newpage
+\section{Poker - The Game}
+Poker is a gambling card game. The card pack consists of fiftytwo cards, which are divided into four colors: Hearts, Spades, Diamond and Clubs. Each of these four colors posseses nine cards which are numerated ascending from two to ten and four face cards: the Jack, the Queen, the King and the Ace.
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=10cm, height=5cm]{cards.jpg}
+		\caption{Card Pack}
+	\end{center}
+\end{figure}
+\\
+To play the game a minimum of two players is needed. In this case it is called "Heads up". Every player starts with a specific amount of Chips, which are the currency in the game. Every turn each player has to bet an according amount of Chips. The options for betting are "check", "call", "raise" and "fold". If there are currently no bets, a player can check, which is equivalent to bet zero. If there are already some bets a player can call, which means to match the current bet made by an other player. Raise means to increase the size of the current bet and fold means to discard the cards and leave the round. This bets are collected in the so called "Pot". In the end the players have five random cards from the card pack on their hands. The winner of a round is the player with the best combination of cards in his hand and wins the pot.
+
+\subsection{Card Combinations}
+There are several card combinations which are ordered hierachically:
+\begin{itemize}
+	\item \textbf{High Card:} This is the lowest possible combination. In this case only the highest card value counts.
+	\item \textbf{One Pair:} This is the next higher combination. Here the player posseses two cards of the same number or figure.
+	\item \textbf{Two Pairs:} Same as before, but only with two times a pair.
+	\item \textbf{Three of a Kind:} Here the player has three cards of the same number or figure on his hand.
+	\item \textbf{Straight:} For this combination, the player must have five cards in ascending order on his hand. The color of the cards doesn't matter. 
+	\item \textbf{Flush:} To achieve this combination the player must have five cards of the same color.
+	\item \textbf{Full House:} The Full House consists of one pair, followed by three of a kind.
+	\item \textbf{Four of a Kind:} Here the player has four cards of the same number or figure on his hand.
+	\item \textbf{Straight Flush:} For the Straight Flush the player must have a Straight and all cards must be in the same color.
+	\item \textbf{Royal Flush:} The last and highest combination is the Royal Flush. Therefore the player must have a Straight Flush with the five highest card values: ten, jack, queen, king and ace. 
+\end{itemize}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics{combinations.png}
+			\caption{Possible combination of cards}
+		\end{center}
+	\end{figure}
+	
+\subsection{Variants of Poker}
+There are many different variants to play Poker. The most popular poker variants which are played in casinos and poker rooms can be divided into the following groups:
+\begin{itemize}
+	\item \textbf{Draw Poker:} In this type of games the players are dealt a complete hand, this means all five cards, hidden. Then the players can improve their hand by replacing cards.
+	\item \textbf{Stud Poker:} Games in which the players recieve a specific amount of face-up cards and face-down cards in multiple betting rounds.
+	\item \textbf{Community card Poker:} The players recieve a incomplete hand, which means not all five cards. This hand is then combined with the community cards which are face-up and can be used by each player.
+\end{itemize}
+
+\subsection{Texas Hold'em Poker}
+This is a community card gametype. For this game two face-down cards are dealt to each player. This are the hand cards.
+Then five community cards are dealt in three stages. The first betting stage is the "Flop". The Flop consists of three cards. The next stage is the "Turn", now one more community card is dealt. The last stage is the "River", where the final community card is dealt. Now each player has to seek out the best five card combinations by using his two hand cards and three community cards. Like in all other Poker games, the players have the options to check, call, raise or fold in each betting round.
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Genetic Programming}
 \label{sec:genprog}
 Genetic Programming is an evolutionary method that tries to solve a complex problem by evolution.
