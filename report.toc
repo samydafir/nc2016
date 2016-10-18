@@ -1,28 +1,34 @@
 \select@language {english}
-\contentsline {section}{\numberline {1}Frameworks}{2}
-\contentsline {subsection}{\numberline {1.1}JEvolution}{2}
-\contentsline {subsection}{\numberline {1.2}GPoker}{2}
-\contentsline {subsection}{\numberline {1.3}Interaction}{2}
-\contentsline {section}{\numberline {2}Genetic Programming}{4}
-\contentsline {subsection}{\numberline {2.1}Chromosome Tree}{4}
-\contentsline {subsubsection}{\numberline {2.1.1}Functions}{4}
-\contentsline {subsubsection}{\numberline {2.1.2}Terminals}{4}
-\contentsline {subsubsection}{\numberline {2.1.3}Root}{4}
-\contentsline {subsubsection}{\numberline {2.1.4}Example}{5}
-\contentsline {subsection}{\numberline {2.2}Evolution}{5}
-\contentsline {subsubsection}{\numberline {2.2.1}Crossover}{5}
-\contentsline {subsubsection}{\numberline {2.2.2}Mutation}{6}
-\contentsline {section}{\numberline {3}Implementation}{7}
-\contentsline {subsection}{\numberline {3.1}Initial changes}{7}
-\contentsline {subsection}{\numberline {3.2}Final implementation}{8}
-\contentsline {subsubsection}{\numberline {3.2.1}Raise}{8}
-\contentsline {subsubsection}{\numberline {3.2.2}Fold}{8}
-\contentsline {section}{\numberline {4}Experiments}{9}
-\contentsline {subsection}{\numberline {4.1}Setup}{9}
-\contentsline {subsubsection}{\numberline {4.1.1}Evolution against PatternPlayer}{9}
-\contentsline {subsubsection}{\numberline {4.1.2}Evolution against TestPlayer}{9}
-\contentsline {subsubsection}{\numberline {4.1.3}Experiment parameter}{10}
-\contentsline {subsection}{\numberline {4.2}Results}{10}
-\contentsline {subsubsection}{\numberline {4.2.1}Evolution against PatternPlayer}{10}
-\contentsline {subsubsection}{\numberline {4.2.2}Evolution against TestPlayer}{11}
-\contentsline {section}{\numberline {5}Links}{13}
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {2}Poker - The Game}{2}
+\contentsline {subsection}{\numberline {2.1}Card Combinations}{2}
+\contentsline {subsection}{\numberline {2.2}Variants of Poker}{3}
+\contentsline {subsection}{\numberline {2.3}Texas Hold'em Poker}{3}
+\contentsline {section}{\numberline {3}Genetic Programming}{4}
+\contentsline {subsection}{\numberline {3.1}Program Tree}{4}
+\contentsline {subsubsection}{\numberline {3.1.1}Functions}{4}
+\contentsline {subsubsection}{\numberline {3.1.2}Terminals}{4}
+\contentsline {subsubsection}{\numberline {3.1.3}Root}{4}
+\contentsline {subsubsection}{\numberline {3.1.4}Example}{5}
+\contentsline {subsection}{\numberline {3.2}Evolution}{5}
+\contentsline {subsubsection}{\numberline {3.2.1}Crossover}{5}
+\contentsline {subsubsection}{\numberline {3.2.2}Mutation}{5}
+\contentsline {section}{\numberline {4}Frameworks}{7}
+\contentsline {subsection}{\numberline {4.1}JEvolution}{7}
+\contentsline {subsection}{\numberline {4.2}GPoker}{7}
+\contentsline {subsection}{\numberline {4.3}Interaction}{8}
+\contentsline {section}{\numberline {5}Experiment Setup}{8}
+\contentsline {subsection}{\numberline {5.1}Alterations}{8}
+\contentsline {subsection}{\numberline {5.2}Node setup}{9}
+\contentsline {subsection}{\numberline {5.3}Evolution against PatternPlayer}{9}
+\contentsline {subsection}{\numberline {5.4}Evolution against TestPlayer}{10}
+\contentsline {subsection}{\numberline {5.5}Fitness and fitness evaluation}{10}
+\contentsline {subsection}{\numberline {5.6}Selection and selection method}{10}
+\contentsline {subsection}{\numberline {5.7}Doyle's Game}{10}
+\contentsline {subsection}{\numberline {5.8}Input parameter}{10}
+\contentsline {section}{\numberline {6}Example player with setup 1}{11}
+\contentsline {section}{\numberline {7}Experiment Results}{12}
+\contentsline {subsection}{\numberline {7.1}Evolution against PatternPlayer}{12}
+\contentsline {subsection}{\numberline {7.2}Evolution against TestPlayer}{12}
+\contentsline {section}{\numberline {8}Summary}{13}
+\contentsline {section}{\numberline {9}Links}{13}
