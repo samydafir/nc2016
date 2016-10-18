@@ -89,14 +89,20 @@ Correspondence to: \\
 \setcounter{page}{1}
 
 \abstract{
-This project works on the evolution of a computer poker player by means of Genetic Programming. The initial population evolves through selection, mutation and crossover of their strategies represented as syntax trees. Evolution selects the best players of every generation based on their fitness value which corresponds to their won chips and hence the quality of their strategies. In the end the fittest player emerges.
+This project focuses on the evolution of a computer poker player by means of Genetic Programming. The initial population evolves through selection, mutation and crossover of their strategies represented as syntax trees. Evolution selects the best players of every generation based on their fitness value which corresponds to their won chips and hence the quality of their strategies. In the end the fittest player emerges.
 The focus of this project lies on making more information available to each computer player in order to let them make better poker moves which ultimately leads to improved evolved players emerging from the evolutionary process. This is done through determining which information is relevant and making it available to be used in a players strategy. An important objective is not to improve strategies ourselves but rather provide information to computer players and let evolution run its course to complete this task.
 Furthermore, fine tuning of evolutionary parameters like mutation rate, population size and number of generations is conducted to achieve the best possible result.
 }
 
-\newpage
-
-%\input{gp.tex}
+\section{Introduction}
+In the following article we will explain our way from the general rules of a poker game to the final results of our project. \\
+The goal is to improve an existing genetic programming poker player by providing additional information about the game.
+To achieve this, basic knowledge about evolution and genetic programming is needed. We will explain everything needed to know, so that anyone reading this article can follow our steps. \\
+For the implementation of a genetic programming poker player we used existing frameworkss, so the main focus does lie in experimenting and not in implementing.
+Hence this article does not contain any actual code examples, at most pseude code.
+We start by explaining the poker game and its rules, where in this project only Texas Hold'em Poker is played.
+Then we show some important ideas that describe genetic programming and give a short overview about the frameworks used, namely GPoker and JEvolution.
+Finally the experiment setups and results are show and summarized.
 
 \newpage
 \section{Poker - The Game}
@@ -374,7 +380,7 @@ Further statistical test would bee needed in order to elucidate why the player w
 
 \begin{center}
 	\includegraphics[width=.7\textwidth]{gp_vs_pp_new.png}
-	% hier muss noch ein \caption{The fitness results of both players playing against the "PatternPlayer" plotted in a ascending order} rein. der Text kann gerne jederzeit umgeändert werden. Soll erstmal nur ein Platzhalter sein. Leider verschiebt mir LATEX das Bild irgendwo hin wenn ich hier \begin{figure} verwende.
+	% hier muss noch ein \caption{The fitness results of both players playing against the "PatternPlayer" plotted in a ascending order} rein. der Text kann gerne jederzeit umge\E4ndert werden. Soll erstmal nur ein Platzhalter sein. Leider verschiebt mir LATEX das Bild irgendwo hin wenn ich hier \begin{figure} verwende.
 \end{center}
 
 \subsection{Evolution against TestPlayer}
@@ -382,7 +388,7 @@ Overall it is safe to say that the changes improved the performance against the 
 
 \begin{center}
 	\includegraphics[width=.7\textwidth]{gp_vs_tp_new.png}
-	% hier muss noch ein \caption{The fitness results of both players playing against the "TestPlayer" plotted in a ascending order} rein. der Text kann gerne jederzeit umgeändert werden. Soll erstmal nur ein Platzhalter sein. Leider verschiebt mir LATEX das Bild irgendwo hin wenn ich hier \begin{figure} verwende.
+	% hier muss noch ein \caption{The fitness results of both players playing against the "TestPlayer" plotted in a ascending order} rein. der Text kann gerne jederzeit umge\E4ndert werden. Soll erstmal nur ein Platzhalter sein. Leider verschiebt mir LATEX das Bild irgendwo hin wenn ich hier \begin{figure} verwende.
 \end{center}
 
 \section{Summary}
