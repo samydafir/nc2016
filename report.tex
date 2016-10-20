@@ -114,7 +114,7 @@ Poker is a gambling card game. The card pack consists of fiftytwo cards, which a
 	\end{center}
 \end{figure}
 \\
-To play the game a minimum of two players is needed. In this case it is called "Heads up". Every player starts with a specific amount of Chips, which are the currency in the game. Every turn each player has to bet an according amount of Chips. The options for betting are "check", "call", "raise" and "fold". If there are currently no bets, a player can check, which is equivalent to bet zero. If there are already some bets a player can call, which means to match the current bet made by an other player. Raise means to increase the size of the current bet and fold means to discard the cards and leave the round. This bets are collected in the so called "Pot". In the end the players have five random cards from the card pack on their hands. The winner of a round is the player with the best combination of cards in his hand and wins the pot.
+To play the game a minimum of two players is needed. In this case it is called "Heads up". Every player starts with a specific amount of chips, which are the currency in the game. Every turn each player has to bet an according amount of Chips. The options for betting are "check", "call", "raise" and "fold". If there are currently no bets, a player can check, which is equivalent to bet zero. If there are already some bets a player can call, which means to match the current bet made by an other player. Raise means to increase the size of the current bet and fold means to discard the cards and leave the round. This bets are collected in the so called "Pot". If a player folds, all chips a he has put into the pot will be lost for him. In the end the players have five random cards from the card pack on their hands. The winner of a round is the player with the best combination of cards in his hand and wins the pot.
 
 \subsection{Card Combinations}
 There are several card combinations which are ordered hierachically:
@@ -240,32 +240,30 @@ In this application surviving means winning more chips and hence emerging as a w
 \subsection{GPoker}
 GPoker is a poker-framework by Edgar Ebensberger \cite{GPoker}. GPoker implements a working no-limit no-rebuy Texas Hold'em poker setup. The implementation was done in Java. This object oriented approach made a design possible where aspects and components of a real poker game are represented directly by the class structure. These components include amongst others a dealer, players, strategies, cards and decks. GPoker allows the parameterization of many aspect of poker including the game-mode, big and small blinds as well as the involved players using a configuration file. There are preimplemented players including a check- and random-player as well as a player following a specific pattern and a human-player.
 GPoker does not necessarily have to use Genetic Programming which is only invoked if an evolved player is participating in a game.
-If this is the case GPoker invokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divides into terinals and functions. The following nodes were already implemented \cite{GPoker}:
-
+If this is the case GPoker invokes JEvolution which then evolves the player using the supplied node-set. The nodeset determines which information is available to the player as well as which actions the player is able to perform. Nodes are divided into terminals and functions. The following nodes were already implemented \cite{GPoker}:
+\label{sec:nodes}
 \begin{itemize}
-	\item ConstMove: represents one of 4 four poker moves: Raise, Call, Check, Fold. Results in another random
+	\item ConstMove: represents one of 4 four poker moves: Raise, Call, Check and Fold. Results in another random
 	move if mutated.
 	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0.
 	\item VarDouble: contains a variable double value ranging from 0.0 to 1.0. Originally only used to representate
 	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
 	hold hand values and the current game stage.
-	\item IfMove: checks a condition and executes the instructions in the left path if the condition is met otherwise the 
-	right path gets excuted. Returns a one of the four poker moves.
+	\item IfMove: checks a condition and executes the instructions in the left path if the condition is met otherwise the right path gets excuted. Returns one of the four poker moves.
 	\item ConstBoolean: contains a constant boolean value ("true" or "false").
-	\item LessEqualBoolean: a function node which compares the two double values of its child nodes and returns true in case of the left value being less or equal compared to the right value. Otherwise false is reutrned.
+	\item LessEqualBoolean: a function node which compares the two double values of its child nodes and returns true in case the left value is less or equal compared to the right value. Otherwise false is reutrned.
 	\item MultDouble: a function node which returns the product of its child nodes (a double value).
 \end{itemize}
 
 \subsection{Interactions}
 Interactions between the two mentioned frameworks (namely JEvolution and GPoker) are essential to achieve the evolution of a poker player through Genetic Programming. Evolution works as follows:
-\label{sec:nodes}
 \begin{enumerate}
 	\item A game of poker is startet through GPoker which checks if a GPlayer is amongst the players.
 	\item If this is the case JEvolution is invoked to create an initial population of players represented by syntax trees
 	made up from the nodes defined in GPoker.
 	\item The fitness of each player (syntax tree) is determined by letting them play games of poker. The fitness value is defined as the total amount of chips a player has won.
 	\item Selection is conducted on the population by selecting the players with the highest fitness values which are ultimately those who won the most chips and played best.
-	\item The new generation is then repopulated through mutation and crossover (more information in section \ref{sec:genprog}).
+	\item The new generation is then repopulated through mutation and crossover (more information in section \ref{sec:genprog} and \ref{selection}).
 	\item Then the whole circle is repeated using this new generation.
 	\item This is repeated until the defined amount of generations has been reached and ultimately the best player is selected.
 \end{enumerate}
@@ -302,7 +300,7 @@ The nodes:
 	\item ConstBoolean
 	\item MultDouble 
 \end{itemize}
-are of no particular interest in this experiment. They were choosen because we want to test if wider range of nodes is beneficial for the evolution.
+are of no particular interest in this experiment. They were choosen because we want to test if a wider range of nodes is beneficial for the evolution.
 
 \subsection{Evolution against PatternPlayer}
 \label{ssec:patternplayer}
@@ -330,7 +328,7 @@ The fitness of a player is usually calculated via a fitness function which deter
 
 \subsection{Selection and selection method}
 \label{selection}
-Some of the players of a given generation, are being selected in order to produce new player for the next generation. The selection method we chose is called "Tournament Selection" where the players with the highest fitness value of a parent population are picked in order to produce a new generation of players. The reason behind the concept of choosing the ones with the highest fitness is that they are more likely to produce new players that are "good" players (the ones achieving high fitness scores). 
+Some of the players of a given generation, are being selected in order to produce new player for the next generation. The selection method we chose is called "Tournament Selection" where players with the highest fitness value of a parent population are picked in order to produce a new generation of players. The reason behind the concept of choosing the ones with the highest fitness is that they are more likely to produce new players that are "good" players (the ones achieving high fitness scores). 
 
 \subsection{Doyle's Game}
 \label{doyle}
@@ -353,7 +351,7 @@ For both experiments the parameters were chosen as follows:
 	\item Mutation-Rate: 0.0369 (see \ref{evolution})
 	\item Crossover-Rate: 1.0 (see \ref{evolution})
 	\item Selection Method: Tournament selection (see \ref{selection})
-	\item Chips/Player: 1000 
+	\item Chips per Player: 1000 
 	\item Big blind: 10
 \end{itemize} 
 A generation of 10.000 seemed to be sufficient for an overall assessment of the fitness. In test runs using 20.000 generation it was noticed that
@@ -372,7 +370,6 @@ The figure below shows how a player might look like using the altered node setup
 \label{sec:expres}
 Each setup evolved against the "PatternPlayer" and the "TestPlayer"  
 Please note that the values in the following diagrams are not plotted in the same order as they have been obtained from the test runs but are sorted in an ascending order!\\
-Furthermore, 
 
 \subsection{Evolution against PatternPlayer}
 The evolution against the "PatternPlayer" resulted in a deterioration of the fitness of the player with "setup 1" compared to the player playing with "setup 2".\\
@@ -387,7 +384,7 @@ Further statistical test would bee needed in order to elucidate why the player w
 
 \newpage
 \subsection{Evolution against TestPlayer}
-Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. It was also notable that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer.
+Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one.
 
 \begin{figure}[!h]
 	\begin{center}
