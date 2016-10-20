@@ -256,7 +256,7 @@ If this is the case GPoker invokes JEvolution which then evolves the player usin
 	\item MultDouble: a function node which returns the product of its child nodes (a double value).
 \end{itemize}
 
-\subsection{Interaction}
+\subsection{Interactions}
 Interactions between the two mentioned frameworks (namely JEvolution and GPoker) are essential to achieve the evolution of a poker player through Genetic Programming. Evolution works as follows:
 \label{sec:nodes}
 \begin{enumerate}
@@ -378,18 +378,23 @@ Furthermore,
 The evolution against the "PatternPlayer" resulted in a deterioration of the fitness of the player with "setup 1" compared to the player playing with "setup 2".\\
 Further statistical test would bee needed in order to elucidate why the player with "setup 2" has an overall higher fitness.
 
-\begin{center}
+\begin{figure}[!h]
+	\begin{center}
 	\includegraphics[width=.7\textwidth]{gp_vs_pp_new.png}
-	% hier muss noch ein \caption{The fitness results of both players playing against the "PatternPlayer" plotted in a ascending order} rein. der Text kann gerne jederzeit umge\E4ndert werden. Soll erstmal nur ein Platzhalter sein. Leider verschiebt mir LATEX das Bild irgendwo hin wenn ich hier \begin{figure} verwende.
-\end{center}
+	\caption{The fitness results of both players playing against the "PatternPlayer" plotted in ascending order}
+	\end{center}
+\end{figure}
 
+\newpage
 \subsection{Evolution against TestPlayer}
 Overall it is safe to say that the changes improved the performance against the TestPlayer. Although there can be some cases where the old player has a higher fitness than the new one. It was also notable that the overall fitness is cut down to approximately a third compared to the test runs against the PatternPlayer.
 
-\begin{center}
-	\includegraphics[width=.7\textwidth]{gp_vs_tp_new.png}
-	% hier muss noch ein \caption{The fitness results of both players playing against the "TestPlayer" plotted in a ascending order} rein. der Text kann gerne jederzeit umge\E4ndert werden. Soll erstmal nur ein Platzhalter sein. Leider verschiebt mir LATEX das Bild irgendwo hin wenn ich hier \begin{figure} verwende.
-\end{center}
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=.7\textwidth]{gp_vs_tp_new.png}
+		\caption{The fitness results of both players playing against the "TestPlayer" plotted in ascending order}
+	\end{center}
+\end{figure}
 
 \section{Summary}
 The main objective of this project was to extend the already existing process of evolving a poker player through Genetic Programming. The focus lay on increasing the information available to the computer player by implementing new nodes to be used in the syntax tree defining a player's strategy. The main feature enabled by the newly implemented nodes is the added ability to evolve the value of a poker raise move (RaiseMove). Furthermore, there is a new node making it possible for the evolved player to work with different values (card values, stage value) depending on the current circumstances (IFDouble).
@@ -397,6 +402,7 @@ As the experiments in chapter \ref{sec:expres} have shown an overall increase in
 
 % links go here, NOT in references
 
+\newpage
 \section{Links}
 
 \begin{itemize}
