@@ -90,7 +90,7 @@ Correspondence to: \\
 
 \abstract{
 This project focuses on the evolution of a computer poker player by means of Genetic Programming. The initial population evolves through selection, mutation and crossover of their strategies represented as syntax trees. Evolution selects the best players of every generation based on their fitness value which corresponds to their won chips and hence the quality of their strategies. In the end the fittest player emerges.
-The focus of this project lies on making more information available to each computer player in order to let them make better poker moves which ultimately leads to improved evolved players emerging from the evolutionary process. This is done through determining which information is relevant and making it available to be used in a players strategy. An important objective is not to improve strategies ourselves but rather provide information to computer players and let evolution run its course to complete this task.
+The focus of this project lies on making more information available to each computer player in order to let them make better poker moves which ultimately leads to the evolution yielding improved evolved players. This is done through determining which information is relevant and making it available to be used in a players strategy. An important objective is not to improve strategies ourselves but rather provide information to computer players and let evolution run its course to complete this task.
 Furthermore, fine tuning of evolutionary parameters like mutation rate, population size and number of generations is conducted to achieve the best possible result.
 }
 
@@ -106,7 +106,7 @@ Finally the experiment setups and results are show and summarized.
 
 \newpage
 \section{Poker - The Game}
-Poker is a gambling card game. The card pack consists of fiftytwo cards, which are divided into four colors: Hearts, Spades, Diamond and Clubs. Each of these four colors posseses nine cards which are numerated ascending from two to ten and four face cards: the Jack, the Queen, the King and the Ace.
+Poker is a gambling card game. The card pack consists of fiftytwo cards, which are divided into four colors: Hearts, Spades, Diamond and Clubs. Each of these four colors posseses nine cards which are numerated ascending from Ace to ten and three face cards: the Jack, the Queen and the King.
 \begin{figure}[!h]
 	\begin{center}
 		\includegraphics[width=10cm, height=5cm]{cards.jpg}
@@ -114,7 +114,7 @@ Poker is a gambling card game. The card pack consists of fiftytwo cards, which a
 	\end{center}
 \end{figure}
 \\
-To play the game a minimum of two players is needed. In this case it is called "Heads up". Every player starts with a specific amount of chips, which are the currency in the game. Every turn each player has to bet an according amount of Chips. The options for betting are "check", "call", "raise" and "fold". If there are currently no bets, a player can check, which is equivalent to bet zero. If there are already some bets a player can call, which means to match the current bet made by an other player. Raise means to increase the size of the current bet and fold means to discard the cards and leave the round. This bets are collected in the so called "Pot". If a player folds, all chips a he has put into the pot will be lost for him. In the end the players have five random cards from the card pack on their hands. The winner of a round is the player with the best combination of cards in his hand and wins the pot.
+To play the game a minimum of two players is needed. In this case it is called "Heads up". Every player starts with a specific amount of chips, which are the currency in the game. Every turn each player has to bet an according amount of Chips. The options for betting are "check", "call", "raise" and "fold". If there are currently no bets, a player can check, which is equivalent to betting zero. If there are already some bets a player can call, which means to match the current bet made by an other player. Raise means to increase the size of the current bet and fold means to discard the cards and leave the round. These bets are collected in the so called "Pot". If a player folds, all chips he has put into the pot will be lost to him. In the end the players have five random cards from the card pack on their hands. The player with the best combination of cards in his hand is the winner and gains the pot.
 
 \subsection{Card Combinations}
 There are several card combinations which are ordered hierachically:
@@ -147,7 +147,7 @@ There are many different variants to play Poker. The most popular poker variants
 
 \subsection{Texas Hold'em Poker}
 This is a community card gametype. For this game two face-down cards are dealt to each player. This are the hand cards.
-Then five community cards are dealt in three stages. The first betting stage is the "Flop". The Flop consists of three cards. The next stage is the "Turn", now one more community card is dealt. The last stage is the "River", where the final community card is dealt. Now each player has to seek out the best five card combinations by using his two hand cards and three community cards. Like in all other Poker games, the players have the options to check, call, raise or fold in each betting round.
+Then five community cards are dealt in three stages. The first betting stage is the "Flop". The Flop consists of three cards. The next stage is the "Turn", now one more community card is dealt. The last stage is the "River", where the final community card is dealt. Now each player has to seek out the best five-card combinations by using his two hand cards and three community cards. Like in all other Poker games, the players have the options to check, call, raise or fold in each betting round.
 
 \newpage
 
@@ -234,7 +234,7 @@ or a randomly chosen subtree is modified.
 JEvolution is a framework implementing several methods of evolutionary computing including Genetic Programming. JEvolution
 conducts Genetic Programming as described in section \ref{sec:genprog}. It takes a node set and creates syntax trees. These
 syntax trees are then evolved using selection, mutation and crossover. JEvolution selects trees with the highest fitness value which has to correspond to the ability of a player to "survive" in the surrounding environment.
-In this application surviving means winning more chips and hence emerging as a winner in more games. Fitness calculation of a GPlayer is done by GPoker. 
+In this application surviving means winning more chips and hence emerging as a winner in more games. Fitness calculation of a computer player to be evolved is done by GPoker. 
 
 \label{gpocker}
 \subsection{GPoker}
@@ -246,13 +246,13 @@ If this is the case GPoker invokes JEvolution which then evolves the player usin
 	\item ConstMove: represents one of 4 four poker moves: Raise, Call, Check and Fold. Results in another random
 	move if mutated.
 	\item ConstDouble: contains a constant double value ranging from 0.0 to 1.0.
-	\item VarDouble: contains a variable double value ranging from 0.0 to 1.0. Originally only used to representate
-	cards where 0.0 represents a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
+	\item VarDouble: contains a variable double value ranging from 0.0 to 1.0. Originally only used to represent
+	cards where 0.0 means a deuce and 1.0 an ace. After extension of the framework VarDouble is now also used to
 	hold hand values and the current game stage.
 	\item IfMove: checks a condition and executes the instructions in the left path if the condition is met otherwise the right path gets excuted. Returns one of the four poker moves.
 	\item ConstBoolean: contains a constant boolean value ("true" or "false").
 	\item LessEqualBoolean: a function node which compares the two double values of its child nodes and returns true in case the left value is less or equal compared to the right value. Otherwise false is reutrned.
-	\item MultDouble: a function node which returns the product of its child nodes (a double value).
+	\item MultDouble: a function node which returns the product of its two child nodes (a double value).
 \end{itemize}
 
 \subsection{Interactions}
@@ -269,13 +269,13 @@ Interactions between the two mentioned frameworks (namely JEvolution and GPoker)
 \end{enumerate}
 
 \section{Experiment Setup}
-For this experiment, some nodes got altered and one new node got introduced to test weather this results in a improved (higher) fitness of the evolved poker players. However, a higher fitness does not always necessarily mean that a player is better than one with with a lower fitness (see \ref{fitness}) since poker is not a transitive game. That means that if player A beats player B and player B beats player C, than player A does not necessarily beat player C.\\
-Two players, each with a different setup of nodes, evolved against the "PatternPlayer" and the "TestPlayer" in multiple runs.
+For this experiment, some nodes were altered and one new node was introduced to test whether this results in a improved (higher) fitness of the evolved poker players. However, a higher fitness does not always necessarily mean that a player is better than one with with a lower fitness (see \ref{fitness}) since poker is not a transitive game. That means that if player A beats player B and player B beats player C, player A does not necessarily beat player C.\\
+Two players, each with a different setup of nodes, are evolved against the "PatternPlayer" and the "TestPlayer" in multiple runs.
 
 \subsection{Alterations}
-The following additions and alterations had been done to the fixed set of nodes explained in section \ref{sec:nodes}.\\\\
+The following additions and alterations have been done to the fixed set of nodes explained in section \ref{sec:nodes}.\\\\
 \underline{New:}\\
-\textbf{IfDouble}: A function node (see \ref{sssec:functions}) that checks if a double value is present and executes the left path, otherwise the right path gets executed.\\\\
+\textbf{IfDouble}: A function node (see \ref{sssec:functions}) that checks if a double value is present and executes the left path, otherwise the right path is executed.\\\\
 \underline{Changed:}\\
 \textbf{RaiseMove}: A terminal node for raise which was previousely implemented in "ConstMove" (see \ref{gpocker}).\\
 \textbf{NewConstMove}: The same terminal as "ConstMove" (see \ref{gpocker}) except that it now doesn't contain the raise anymore since raise is now a terminal on it's own.
@@ -283,7 +283,7 @@ The following additions and alterations had been done to the fixed set of nodes 
 \subsection{Node setup}
 \label{ssec:nodesetup}
 These are the node-setups for both players.\\
-The player with Setup1 has the aforementioned new and altered nodes in his pool for evolution. The player with Setup2 has the the original function- and terminal-set without any additional alterations.\\
+The player with Setup 1 has the aforementioned new and altered nodes in his pool for evolution. The player with Setup2 has the the original function- and terminal-set without any additional alterations.\\
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -304,7 +304,7 @@ are of no particular interest in this experiment. They were choosen because we w
 
 \subsection{Evolution against PatternPlayer}
 \label{ssec:patternplayer}
-The pattern player was choosen to evolve against, because it exhibits a play style that a new player to Texas Hold'em would have. Meaning that it plays defensively when his hand is not that great. It evaluates its hand (including community cards) and the hole cards. A normalized value is then calculated which in turn determines its next move.
+The pattern player was choosen as opponent, because he exhibits a play style that a new player to Texas Hold'em would have. Meaning that he plays defensively when his hand is not that great. He evaluates his hand (including community cards) and the hole cards. A normalized value is then calculated which in turn determines his next move.
 
 \newpage
 
@@ -324,7 +324,7 @@ One test player was choosen from previously evolved players which plays as follo
 
 \subsection{Fitness and fitness evaluation}
 \label{fitness}
-The fitness of a player is usually calculated via a fitness function which determines its performance or quality in the given environment. In the context of this project, the fitness is represented by the amount of chips a player had won.
+The fitness of a player is usually calculated via a fitness function which determines its performance or quality in the given environment. In the context of this project, the fitness is represented by the amount of chips a player has won.
 
 \subsection{Selection and selection method}
 \label{selection}
@@ -332,7 +332,7 @@ Some of the players of a given generation, are being selected in order to produc
 
 \subsection{Doyle's Game}
 \label{doyle}
-Doyle's Game is a variant of no-limit Texas Hold'em and is being used in this experiment. In this variant of the game, each player can make an "all-in" bet, but the players stack size (the amount of chips a player has before making any bet, blinds included) are reset to some default size/amount after each hand. The won or lost chips of every player is stored separately for each one and does not affect the starting chips of the following games.\\\\
+Doyle's Game is a variant of no-limit Texas Hold'em and is being used in this experiment. In this variant of the game, each player can make an "all-in" bet, but the players stack size (the amount of chips a player has before making any bet, blinds included) are reset to some default size/amount after each hand. The won or lost chips of every player are stored separately for each one and do not affect the starting chips of the following games.\\\\
 This approach prevents two problems:
 \begin{itemize}
 	\item a player going bankrupt during a game. Avoiding this is desirable since we want to evaluate each player against each opponent.
@@ -395,7 +395,7 @@ Overall it is safe to say that the changes improved the performance against the 
 
 \section{Summary}
 The main objective of this project was to extend the already existing process of evolving a poker player through Genetic Programming. The focus lay on increasing the information available to the computer player by implementing new nodes to be used in the syntax tree defining a player's strategy. The main feature enabled by the newly implemented nodes is the added ability to evolve the value of a poker raise move (RaiseMove). Furthermore, there is a new node making it possible for the evolved player to work with different values (card values, stage value) depending on the current circumstances (IFDouble).
-As the experiments in chapter \ref{sec:expres} have shown an overall increase in an evolved player's success can only be partly confirmed and is highly dependent on the opponent. Experiments where the computer player was evolved against a opponent following a certain fixed pattern showed no improvement. The second round of experiments was conducted against a sane player with a strategy a human might use. These results showed an increase in the evolved player's overall fitness of up to 30 percent compared to the original project state which is indeed a fairly significant improvement.
+As the experiments in chapter \ref{sec:expres} have shown an overall increase in an evolved player's success can only be partly confirmed and is highly dependent on the opponent. Experiments where the computer player was evolved against an opponent following a certain fixed pattern showed no improvement. The second round of experiments was conducted against a sane player with a strategy a human might use. These results showed an increase in the evolved player's overall fitness of up to 30 percent compared to the original project state which is indeed a fairly significant improvement.
 
 % links go here, NOT in references
 
